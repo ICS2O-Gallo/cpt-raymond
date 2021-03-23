@@ -19,6 +19,7 @@ pygame.display.set_caption("ENTER TITLE")
 # ---------------------------
 # Fonts
 menu_font = pygame.font.SysFont("Georgia", 25, True, False)
+health_font = pygame.font.SysFont("Georgia", 14, True, False)
 
 # Menu Buttoms
 shop_button = pygame.Rect(800, 700, 200, 100)  # (RIGHT SIDE)
@@ -76,7 +77,7 @@ def run_menu():
         # Must be the last two lines
         # of the game loop
         pygame.display.flip()
-        clock.tick(30)
+        clock.tick(60)
 
 #Display rules function
 def run_rules():
@@ -100,17 +101,63 @@ def run_rules():
         for i in range(161):
             pygame.draw.line(screen, (80+i, 40+i, 60+i//2), [0,5*i], [1000,5*i], 5)
 
-        
+
 
         # Must be the last two lines
         # of the game loop
         pygame.display.flip()
-        clock.tick(30)
+        clock.tick(60)
+        # ---------------------------
+
+#DIsplay game
+def run_game():
+    health = 1000
+    play = True
+    while play:
+        # EVENT HANDLING
+        for event in pygame.event.get():
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    play = False
+            elif event.type == QUIT:
+                play = False
+
+        # GAME STATE UPDATES
+        # All game math and comparisons happen here
+
+        # DRAWING
+        screen.fill((255, 255, 255))  # always the first drawing command
+
+        # LEFT BOARD
+        pygame.draw.rect(screen, (0, 0, 0), [0, 0, 200, 800], 0)
+        # Health Bar
+        pygame.draw.rect(screen, (255, 0, 0), [5, 5, 190, 20], 0)
+        pygame.draw.rect(screen, (0, 255, 0), [5, 5, 190*(health/1000), 20], 0)
+        health_text = health_font.render(f"{health}/1000", True, (0, 0, 0))
+        screen.blit(health_text, [60, 5])
+        # Character
+        pygame.draw.rect(screen, (155, 136, 187), [5, 30, 190, 190], 0)
+        # Passive
+        pygame.draw.rect(screen, (255, 255, 255), [5, 225, 50, 50], 0)
+        # Ability 1
+        pygame.draw.rect(screen, (255, 255, 255), [5, 280, 50, 50], 0)
+        # Ability 2
+        pygame.draw.rect(screen, (255, 255, 255), [5, 335, 50, 50], 0)
+        # Ability 3
+        pygame.draw.rect(screen, (255, 255, 255), [5, 390, 50, 50], 0)
+        # Ultimate Ability
+        pygame.draw.rect(screen, (255, 255, 255), [5, 445, 50, 50], 0)
+
+
+        # Must be the last two lines
+        # of the game loop
+        pygame.display.flip()
+        clock.tick(60)
         # ---------------------------
 
 
 # ---------------------------
-run_rules()
+run_game()
 
 while running:
     # EVENT HANDLING
