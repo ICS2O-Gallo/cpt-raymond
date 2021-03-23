@@ -48,6 +48,7 @@ running = True
 # current_screen = "menu"
 
 # ---------------------------
+#Drawing Faction Icons
 def faction_1_icon(x, y):
     pygame.draw.rect(screen, (255, 0, 0), [x, y, 190, 190], 0)
 def faction_2_icon(x, y):
@@ -57,7 +58,7 @@ def faction_3_icon(x, y):
 def faction_4_icon(x, y):
     pygame.draw.rect(screen, (255, 255, 0), [x, y, 190, 190], 0)
 
-#Display Character select
+#Display Faction select
 def faction_select():
     # Faction Select Grid 2x2
     pygame.draw.line(screen, (0, 0, 0), [600, 0], [600, 800], 1)
@@ -95,6 +96,17 @@ def faction_select():
     view_text_4 = menu_font.render("View", True, (255, 255, 255))
     screen.blit(view_text_4, [760, 715])
 
+#Display Ability List
+def abilities(x, y, r, g, b):
+    # Passive
+    pygame.draw.rect(screen, (r, g, b), [x, y, 50, 50], 0)
+    # Ability 1
+    pygame.draw.rect(screen, (r, g, b), [x, y+55, 50, 50], 0)
+    # Ability 2
+    pygame.draw.rect(screen, (r, g, b), [x, y+110, 50, 50], 0)
+    # Ultimate Ability
+    pygame.draw.rect(screen, (r, g, b), [x, y+165, 50, 50], 0)
+
 #Display game
 def run_game():
     #Health
@@ -102,7 +114,8 @@ def run_game():
     current_health = 1000
     #Selected Faction - 0 means none
     faction = 0
-    #Colour of Selected Faction
+    #Which character - 0 means none
+    view = 0
 
     play = True
     while play:
@@ -132,13 +145,13 @@ def run_game():
                     elif select_4_hit == 1:
                         faction = 4
                     elif view_1_hit == 1:
-                        info_faction1()
+                        view = 1
                     elif view_2_hit == 1:
-                        info_faction2()
+                        view = 2
                     elif view_3_hit == 1:
-                        info_faction3()
+                        view = 3
                     elif view_4_hit == 1:
-                        info_faction4()
+                        view = 4
 
         # GAME STATE UPDATES
         # All game math and comparisons happen here
@@ -158,19 +171,23 @@ def run_game():
         # Faction Icon + Border
         pygame.draw.rect(screen, DEFAULT, [5, 30, 190, 190], 0)
         pygame.draw.rect(screen, (175, 0, 175), [5, 30, 190, 190], 2)
-        # Passive
-        pygame.draw.rect(screen, (255, 255, 255), [5, 225, 50, 50], 0)
-        # Ability 1
-        pygame.draw.rect(screen, (255, 255, 255), [5, 280, 50, 50], 0)
-        # Ability 2
-        pygame.draw.rect(screen, (255, 255, 255), [5, 335, 50, 50], 0)
-        # Ultimate Ability
-        pygame.draw.rect(screen, (255, 255, 255), [5, 390, 50, 50], 0)
+        # Display abilities
+        abilities(5, 225, 255, 255, 255)
 
 
-        # MAIN SCREEN
+        # MAIN SCREEN (Right)
         if faction == 0:
-            faction_select()
+            if view == 0:
+                faction_select()
+            elif view == 1:
+                view_faction1()
+            elif view == 2:
+                view_faction2()
+            elif view == 3:
+                view_faction3()
+            elif view == 4:
+                view_faction4()
+
         elif faction == 1:
             faction_1_icon(5, 30)
             pygame.draw.rect(screen, (175, 0, 175), [5, 30, 190, 190], 2)
@@ -191,21 +208,36 @@ def run_game():
         # ---------------------------
 
 # Faction 1 Info
-def info_faction1():
-    s
+def view_faction1():
+    #Icon
+    faction_1_icon(300,30)
+    pygame.draw.rect(screen, (175, 0, 175), [300, 30, 190, 190], 2)
+    #Abilities
+    abilities(300, 225, 0, 0, 0)
 
 # Faction 2 Info
-def info_faction2():
-    s
+def view_faction2():
+    #Icon
+    faction_2_icon(300,30)
+    pygame.draw.rect(screen, (175, 0, 175), [300, 30, 190, 190], 2)
+    #Abilities
+    abilities(300, 225, 0, 0, 0)
 
 # Faction 3 Info
-def info_faction3():
-    s
+def view_faction3():
+    #Icon
+    faction_3_icon(300,30)
+    pygame.draw.rect(screen, (175, 0, 175), [300, 30, 190, 190], 2)
+    #Abilities
+    abilities(300, 225, 0, 0, 0)
 
 # Faction 4 Info
-def info_faction4():
-    s
-
+def view_faction4():
+    #Icon
+    faction_4_icon(300,30)
+    pygame.draw.rect(screen, (175, 0, 175), [300, 30, 190, 190], 2)
+    #Abilities
+    abilities(300, 225, 0, 0, 0)
 
 
 #Display menu function
