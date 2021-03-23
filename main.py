@@ -1,7 +1,7 @@
 # pygame template
 import pygame
 import random
-from pygame.locals import K_ESCAPE, KEYDOWN, QUIT
+from pygame.locals import K_ESCAPE, KEYDOWN, QUIT, MOUSEBUTTONDOWN
 
 #Initialize
 pygame.init()
@@ -33,9 +33,105 @@ running = True
 current_screen = "menu"
 
 # ---------------------------
+#Display game
+def run_game():
+    health = 1000
+    play = True
+    while play:
+        # EVENT HANDLING
+        for event in pygame.event.get():
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    play = False
+            elif event.type == QUIT:
+                play = False
+
+        # GAME STATE UPDATES
+        # All game math and comparisons happen here
+
+        # DRAWING
+        screen.fill((255, 255, 255))  # always the first drawing command
+
+        # LEFT BOARD
+        pygame.draw.rect(screen, (0, 0, 0), [0, 0, 200, 800], 0)
+        # Health Bar
+        pygame.draw.rect(screen, (175, 0, 0), [5, 5, 190, 20], 0)
+        pygame.draw.rect(screen, (34, 139, 34), [5, 5, 190*(health/10000), 20], 0)
+        health_text = health_font.render(f"{health}/10000", True, (0, 0, 0))
+        screen.blit(health_text, [60, 5])
+        # health+=50
+
+        # Character Icon
+        pygame.draw.rect(screen, (214, 138, 89), [5, 30, 190, 190], 0)
+        # Passive
+        pygame.draw.rect(screen, (255, 255, 255), [5, 225, 50, 50], 0)
+        # Ability 1
+        pygame.draw.rect(screen, (255, 255, 255), [5, 280, 50, 50], 0)
+        # Ability 2
+        pygame.draw.rect(screen, (255, 255, 255), [5, 335, 50, 50], 0)
+        # Ultimate Ability
+        pygame.draw.rect(screen, (255, 255, 255), [5, 390, 50, 50], 0)
+
+
+        # MAIN SCREEN
+        # Character Select
+        pygame.draw.line(screen, (0,0,0), [600,0], [600,800], 1)
+        pygame.draw.line(screen, (0,0,0), [200, 400], [1000, 400], 1)
+
+        # Character 1
+        pygame.draw.rect(screen, (255, 0, 0), [300, 5, 190, 190], 0)
+        pygame.draw.rect(screen, (0, 0, 0), [300, 200, 190, 85], 0)
+        select_text_1 = menu_font.render("Select", True, (255, 255, 255))
+        screen.blit(select_text_1, [355, 225])
+        pygame.draw.rect(screen, (0, 0, 0), [300, 290, 190, 85], 0)
+        view_text_1 = menu_font.render("View", True, (255, 255, 255))
+        screen.blit(view_text_1, [360, 315])
+
+        # Character 2
+        pygame.draw.rect(screen, (0, 255, 0), [700, 5, 190, 190], 0)
+        pygame.draw.rect(screen, (0, 0, 0), [700, 200, 190, 85], 0)
+        select_text_2 = menu_font.render("Select", True, (255, 255, 255))
+        screen.blit(select_text_2, [755, 225])
+        pygame.draw.rect(screen, (0, 0, 0), [700, 290, 190, 85], 0)
+        view_text_2 = menu_font.render("View", True, (255, 255, 255))
+        screen.blit(view_text_2, [760, 315])
+
+        # Character 3
+        pygame.draw.rect(screen, (0, 0, 255), [300, 405, 190, 190], 0)
+        pygame.draw.rect(screen, (0, 0, 0), [300, 600, 190, 85], 0)
+        select_text_3 = menu_font.render("Select", True, (255, 255, 255))
+        screen.blit(select_text_3, [355, 625])
+        pygame.draw.rect(screen, (0, 0, 0), [300, 690, 190, 85], 0)
+        view_text_3 = menu_font.render("View", True, (255, 255, 255))
+        screen.blit(view_text_3, [360, 715])
+
+        # Character 4
+        pygame.draw.rect(screen, (255, 255, 0), [700, 405, 190, 190], 0)
+        pygame.draw.rect(screen, (0, 0, 0), [700, 600, 190, 85], 0)
+        select_text_4 = menu_font.render("Select", True, (255, 255, 255))
+        screen.blit(select_text_4, [755, 625])
+        pygame.draw.rect(screen, (0, 0, 0), [700, 690, 190, 85], 0)
+        view_text_4 = menu_font.render("View", True, (255, 255, 255))
+        screen.blit(view_text_4, [760, 715])
+
+        # Must be the last two lines
+        # of the game loop
+        pygame.display.flip()
+        clock.tick(60)
+        # ---------------------------
+
+# Character 1 Info
+
+# Character 2 Info
+
+# Character 3 Info
+
+# Character 4 Info
+
 
 #Display menu function
 def run_menu():
+    global running
     menu = True
     while menu:
         # EVENT HANDLING
@@ -43,8 +139,21 @@ def run_menu():
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     menu = False
+                    running = False
             elif event.type == QUIT:
                 menu = False
+                running = False
+            elif event.type == MOUSEBUTTONDOWN:
+                play_hit = play_button.collidepoint(event.pos)
+                instructions_hit = instructions_button.collidepoint(event.pos)
+                if play_hit == 1:
+                    print("HIT PLAY")
+                    run_game()
+                elif instructions_hit == 1:
+                    print("HIT RULES")
+                    run_rules()
+                else:
+                    print("HIT NOTHING")
 
         # GAME STATE UPDATES
         # All game math and comparisons happen here
@@ -79,6 +188,7 @@ def run_menu():
         pygame.display.flip()
         clock.tick(60)
 
+
 #Display rules function
 def run_rules():
     rules = True
@@ -109,57 +219,13 @@ def run_rules():
         clock.tick(60)
         # ---------------------------
 
-#DIsplay game
-def run_game():
-    health = 1000
-    play = True
-    while play:
-        # EVENT HANDLING
-        for event in pygame.event.get():
-            if event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
-                    play = False
-            elif event.type == QUIT:
-                play = False
-
-        # GAME STATE UPDATES
-        # All game math and comparisons happen here
-
-        # DRAWING
-        screen.fill((255, 255, 255))  # always the first drawing command
-
-        # LEFT BOARD
-        pygame.draw.rect(screen, (0, 0, 0), [0, 0, 200, 800], 0)
-        # Health Bar
-        pygame.draw.rect(screen, (255, 0, 0), [5, 5, 190, 20], 0)
-        pygame.draw.rect(screen, (0, 255, 0), [5, 5, 190*(health/1000), 20], 0)
-        health_text = health_font.render(f"{health}/1000", True, (0, 0, 0))
-        screen.blit(health_text, [60, 5])
-        # Character
-        pygame.draw.rect(screen, (155, 136, 187), [5, 30, 190, 190], 0)
-        # Passive
-        pygame.draw.rect(screen, (255, 255, 255), [5, 225, 50, 50], 0)
-        # Ability 1
-        pygame.draw.rect(screen, (255, 255, 255), [5, 280, 50, 50], 0)
-        # Ability 2
-        pygame.draw.rect(screen, (255, 255, 255), [5, 335, 50, 50], 0)
-        # Ability 3
-        pygame.draw.rect(screen, (255, 255, 255), [5, 390, 50, 50], 0)
-        # Ultimate Ability
-        pygame.draw.rect(screen, (255, 255, 255), [5, 445, 50, 50], 0)
-
-
-        # Must be the last two lines
-        # of the game loop
-        pygame.display.flip()
-        clock.tick(60)
-        # ---------------------------
 
 
 # ---------------------------
-run_game()
+
 
 while running:
+    run_menu()
     # EVENT HANDLING
     for event in pygame.event.get():
         if event.type == KEYDOWN:
@@ -167,6 +233,17 @@ while running:
                 running = False
         elif event.type == QUIT:
             running = False
+        # elif event.type == MOUSEBUTTONDOWN:
+        #     play_hit = play_button.collidepoint(event.pos)
+        #     instructions_hit = instructions_button.collidepoint(event.pos)
+        #     if play_hit == 1:
+        #         print("HIT PLAY")
+        #         run_game()
+        #     elif instructions_hit == 1:
+        #         print("HIT RULES")
+        #         run_rules()
+        #     else:
+        #         print("HIT NOTHING")
 
     # GAME STATE UPDATES
     # All game math and comparisons happen here
