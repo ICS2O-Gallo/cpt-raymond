@@ -47,6 +47,9 @@ view_button_4 = pygame.Rect(700, 690, 190, 85)
 # ---------------------------
 #Game runs while running is True
 running = True
+#The player's selected faction - 0 is none
+faction = 0
+
 # #Current screen being displayed
 # current_screen = "menu"
 
@@ -60,6 +63,67 @@ def faction_3_icon(x, y):
     pygame.draw.rect(screen, (0, 0, 255), [x, y, 190, 190], 0)
 def faction_4_icon(x, y):
     pygame.draw.rect(screen, (255, 255, 0), [x, y, 190, 190], 0)
+
+# Faction 1 Info
+def view_faction1():
+    #Icon
+    faction_1_icon(300,30)
+    pygame.draw.rect(screen, (175, 0, 175), [300, 30, 190, 190], 2)
+    #Faction Name
+    faction_name_text = faction_name_font.render("Faction: PYRO", True, (255,0,0))
+    screen.blit(faction_name_text, [300, 225])
+    #Faction Description
+    line_1 = game_font.render("The Pyro wield the elementary power of heat and fire.", True, (0,0,0))
+    line_2 = game_font.render("WIP", True, (0,0,0))
+    screen.blit(line_1, [300, 275])
+    screen.blit(line_2, [300, 300])
+    #Abilities
+    abilities(300, 425, 0, 0, 0)
+# Faction 2 Info
+def view_faction2():
+    #Icon
+    faction_2_icon(300,30)
+    pygame.draw.rect(screen, (175, 0, 175), [300, 30, 190, 190], 2)
+    #Faction Name
+    faction_name_text = faction_name_font.render("Faction: NATURO", True, (0,255,0))
+    screen.blit(faction_name_text, [300, 225])
+    #Faction Description
+    line_1 = game_font.render("The Naturo wield the ancient ability to harness nature and heal.", True, (0,0,0))
+    line_2 = game_font.render("WIP", True, (0,0,0))
+    screen.blit(line_1, [300, 275])
+    screen.blit(line_2, [300, 300])
+    #Abilities
+    abilities(300, 425, 0, 0, 0)
+# Faction 3 Info
+def view_faction3():
+    #Icon
+    faction_3_icon(300,30)
+    pygame.draw.rect(screen, (175, 0, 175), [300, 30, 190, 190], 2)
+    #Faction Name
+    faction_name_text = faction_name_font.render("Faction: CRYO", True, (0,0,255))
+    screen.blit(faction_name_text, [300, 225])
+    #Faction Description
+    line_1 = game_font.render("The Cryo wield the freezing weapons of water and ice.", True, (0,0,0))
+    line_2 = game_font.render("WIP", True, (0,0,0))
+    screen.blit(line_1, [300, 275])
+    screen.blit(line_2, [300, 300])
+    #Abilities
+    abilities(300, 425, 0, 0, 0)
+# Faction 4 Info
+def view_faction4():
+    #Icon
+    faction_4_icon(300,30)
+    pygame.draw.rect(screen, (175, 0, 175), [300, 30, 190, 190], 2)
+    #Faction Name
+    faction_name_text = faction_name_font.render("Faction: ELECTRO", True, (255,255,0))
+    screen.blit(faction_name_text, [300, 225])
+    #Faction Description
+    line_1 = game_font.render("The Electro wield the innovative tools of light and electricity.", True, (0,0,0))
+    line_2 = game_font.render("WIP", True, (0,0,0))
+    screen.blit(line_1, [300, 275])
+    screen.blit(line_2, [300, 300])
+    #Abilities
+    abilities(300, 425, 0, 0, 0)
 
 #Display Faction select
 def faction_select():
@@ -118,18 +182,19 @@ def abilities(x, y, r, g, b):
     ult_text = game_font.render("3", True, (255 - r, 255 - g, 255 - b))
     screen.blit(ult_text, [x+2, y+165])
 
-#Display game
-def run_game():
+# ---------------------------
+
+#Display entry screen with the left HUD and faction select
+def entry_screen():
     #Health
     total_health = 10000
     current_health = 1000
-    #Selected Faction - 0 means none
-    faction = 0
+    global faction
     #Which character - 0 means none
     view = 0
 
     play = True
-    while play:
+    while play and faction == 0:
         # EVENT HANDLING
         for event in pygame.event.get():
             if event.type == KEYDOWN:
@@ -176,7 +241,7 @@ def run_game():
         # All game math and comparisons happen here
 
         # DRAWING
-        screen.fill((255, 255, 255))  # always the first drawing command
+        screen.fill((175, 175, 175))# always the first drawing command
 
         # LEFT BOARD
         pygame.draw.rect(screen, (0, 0, 0), [0, 0, 200, 800], 0)
@@ -240,80 +305,13 @@ def run_game():
         pygame.display.flip()
         clock.tick(60)
 
-# ---------------------------
-
-
-# Faction 1 Info
-def view_faction1():
-    #Icon
-    faction_1_icon(300,30)
-    pygame.draw.rect(screen, (175, 0, 175), [300, 30, 190, 190], 2)
-    #Faction Name
-    faction_name_text = faction_name_font.render("Faction: PYRO", True, (255,0,0))
-    screen.blit(faction_name_text, [300, 225])
-    #Faction Description
-    line_1 = game_font.render("The Pyro wield the elementary power of heat and fire.", True, (0,0,0))
-    line_2 = game_font.render("WIP", True, (0,0,0))
-    screen.blit(line_1, [300, 275])
-    screen.blit(line_2, [300, 300])
-    #Abilities
-    abilities(300, 425, 0, 0, 0)
-
-# Faction 2 Info
-def view_faction2():
-    #Icon
-    faction_2_icon(300,30)
-    pygame.draw.rect(screen, (175, 0, 175), [300, 30, 190, 190], 2)
-    #Faction Name
-    faction_name_text = faction_name_font.render("Faction: NATURO", True, (0,255,0))
-    screen.blit(faction_name_text, [300, 225])
-    #Faction Description
-    line_1 = game_font.render("The Naturo wield the ancient ability to harness nature and heal.", True, (0,0,0))
-    line_2 = game_font.render("WIP", True, (0,0,0))
-    screen.blit(line_1, [300, 275])
-    screen.blit(line_2, [300, 300])
-    #Abilities
-    abilities(300, 425, 0, 0, 0)
-
-
-# Faction 3 Info
-def view_faction3():
-    #Icon
-    faction_3_icon(300,30)
-    pygame.draw.rect(screen, (175, 0, 175), [300, 30, 190, 190], 2)
-    #Faction Name
-    faction_name_text = faction_name_font.render("Faction: CRYO", True, (0,0,255))
-    screen.blit(faction_name_text, [300, 225])
-    #Faction Description
-    line_1 = game_font.render("The Cryo wield the freezing weapons of water and ice.", True, (0,0,0))
-    line_2 = game_font.render("WIP", True, (0,0,0))
-    screen.blit(line_1, [300, 275])
-    screen.blit(line_2, [300, 300])
-    #Abilities
-    abilities(300, 425, 0, 0, 0)
-
-# Faction 4 Info
-def view_faction4():
-    #Icon
-    faction_4_icon(300,30)
-    pygame.draw.rect(screen, (175, 0, 175), [300, 30, 190, 190], 2)
-    #Faction Name
-    faction_name_text = faction_name_font.render("Faction: ELECTRO", True, (255,255,0))
-    screen.blit(faction_name_text, [300, 225])
-    #Faction Description
-    line_1 = game_font.render("The Electro wield the innovative tools of light and electricity.", True, (0,0,0))
-    line_2 = game_font.render("WIP", True, (0,0,0))
-    screen.blit(line_1, [300, 275])
-    screen.blit(line_2, [300, 300])
-    #Abilities
-    abilities(300, 425, 0, 0, 0)
-
 
 #Display menu function
 def run_menu():
     global running
+    global faction
     menu = True
-    while menu:
+    while menu and faction == 0:
         # EVENT HANDLING
         for event in pygame.event.get():
             if event.type == KEYDOWN:
@@ -328,7 +326,7 @@ def run_menu():
                 instructions_hit = instructions_button.collidepoint(event.pos)
                 if play_hit == 1:
                     print("HIT PLAY")
-                    run_game()
+                    entry_screen()
                 elif instructions_hit == 1:
                     print("HIT RULES")
                     run_rules()
@@ -397,13 +395,12 @@ def run_rules():
         # of the game loop
         pygame.display.flip()
         clock.tick(60)
-        # ---------------------------
-
 
 
 # ---------------------------
 
-#ACTUAL CODE TO RUN
+
+#ACTUAL CODE TO RUN GAME
 while running:
     run_menu()
     # EVENT HANDLING
@@ -424,7 +421,7 @@ while running:
     # Must be the last two lines
     # of the game loop
     pygame.display.flip()
-    clock.tick(30)
-    # ---------------------------
+    clock.tick(60)
+
 
 pygame.quit()
