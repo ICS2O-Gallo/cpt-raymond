@@ -25,6 +25,7 @@ faction_name_font = pygame.font.SysFont("Georgia", 32, True, False)
 
 # Colours
 DEFAULT = (49, 51, 53)
+current_faction_colour = (-1, -1, -1)
 
 # Buttons
 shop_button = pygame.Rect(800, 700, 200, 100)  # (RIGHT SIDE)
@@ -44,14 +45,22 @@ view_button_2 = pygame.Rect(700, 290, 190, 85)
 view_button_3 = pygame.Rect(300, 690, 190, 85)
 view_button_4 = pygame.Rect(700, 690, 190, 85)
 
+
+
 # ---------------------------
+
 #Game runs while running is True
 running = True
 #The player's selected faction - 0 is none
 faction = 0
+# Health
+total_health = 10000
+current_health = 10000
+#Store all of the outlaws (enemies)
+outlaws = []
 
-# #Current screen being displayed
-# current_screen = "menu"
+
+
 
 # ---------------------------
 #Drawing Faction Icons
@@ -182,19 +191,68 @@ def abilities(x, y, r, g, b):
     ult_text = game_font.render("3", True, (255 - r, 255 - g, 255 - b))
     screen.blit(ult_text, [x+2, y+165])
 
-# ---------------------------
+#Display Left HUD
+def left_hud(r,g,b):
+    global current_health
+    global total_health
+    # LEFT BOARD
+    pygame.draw.rect(screen, (0, 0, 0), [0, 0, 200, 800], 0)
+    # Health Bar
+    pygame.draw.rect(screen, (175, 0, 0), [5, 5, 190, 20], 0)
+    pygame.draw.rect(screen, (34, 139, 34), [5, 5, 190 * (current_health / total_health), 20], 0)
+    health_text = health_font.render(f"{current_health}/{total_health}", True, (0, 0, 0))
+    screen.blit(health_text, [60, 5])
+    # Faction Icon + Border
+    pygame.draw.rect(screen, (r, g, b), [5, 30, 190, 190], 0)
+    pygame.draw.rect(screen, (175, 0, 175), [5, 30, 190, 190], 2)
+    # Display Abilities
+    abilities(5, 225, 255, 255, 255)
 
+# ---------------------------
+#Pyro Abilities
+def pyro_1():
+    s
+def pyro_2():
+    s
+def pyro_ult():
+    s
+#Naturo Abilities
+def naturo_1():
+    s
+def naturo_2():
+    s
+def naturo_ult():
+    s
+#Cryo Abilities
+def cryo_1():
+    s
+def cryo_2():
+    s
+def cryo_ult():
+    s
+#Electro Abilities
+def electro_1():
+    s
+def electro_2():
+    s
+def electro_ult():
+    s
+
+
+
+# ---------------------------
 #Display entry screen with the left HUD and faction select
 def entry_screen():
     #Health
-    total_health = 10000
-    current_health = 1000
     global faction
-    #Which character - 0 means none
+    global total_health
+    global current_health
+    #faction being viewed - 0 means none
     view = 0
 
     play = True
     while play and faction == 0:
+        global current_faction_colour
         # EVENT HANDLING
         for event in pygame.event.get():
             if event.type == KEYDOWN:
@@ -218,12 +276,16 @@ def entry_screen():
                     if view == 0:
                         if select_1_hit == 1:
                             faction = 1
+                            current_faction_colour = (255, 0, 0)
                         elif select_2_hit == 1:
                             faction = 2
+                            current_faction_colour = (0, 255, 0)
                         elif select_3_hit == 1:
                             faction = 3
+                            current_faction_colour = (0, 0, 255)
                         elif select_4_hit == 1:
                             faction = 4
+                            current_faction_colour = (255, 255, 0)
                         elif view_1_hit == 1:
                             view = 1
                         elif view_2_hit == 1:
@@ -243,21 +305,8 @@ def entry_screen():
         # DRAWING
         screen.fill((175, 175, 175))# always the first drawing command
 
-        # LEFT BOARD
-        pygame.draw.rect(screen, (0, 0, 0), [0, 0, 200, 800], 0)
-        # Health Bar
-        pygame.draw.rect(screen, (175, 0, 0), [5, 5, 190, 20], 0)
-        pygame.draw.rect(screen, (34, 139, 34), [5, 5, 190*(current_health/total_health), 20], 0)
-        health_text = health_font.render(f"{current_health}/{total_health}", True, (0, 0, 0))
-        screen.blit(health_text, [60, 5])
-        current_health+=2
-
-        # Faction Icon + Border
-        pygame.draw.rect(screen, DEFAULT, [5, 30, 190, 190], 0)
-        pygame.draw.rect(screen, (175, 0, 175), [5, 30, 190, 190], 2)
-        # Display Abilities
-        abilities(5, 225, 255, 255, 255)
-
+        # LEFT SCREEN
+        left_hud(DEFAULT[0], DEFAULT[1], DEFAULT[2])
         # RIGHT SCREEN
         if faction == 0:
             if view == 0:
@@ -416,6 +465,10 @@ while running:
 
     # DRAWING
     screen.fill((255, 255, 255))  # always the first drawing command
+    # LEFT SCREEN
+    left_hud(current_faction_colour[0], current_faction_colour[1], current_faction_colour[2])
+
+
 
 
     # Must be the last two lines
