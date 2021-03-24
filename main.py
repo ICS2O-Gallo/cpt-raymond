@@ -1,7 +1,8 @@
 # pygame template
 import pygame
 import random
-from pygame.locals import K_ESCAPE, KEYDOWN, QUIT, MOUSEBUTTONDOWN, K_BACKSPACE
+import time
+from pygame.locals import K_ESCAPE, KEYDOWN, QUIT, MOUSEBUTTONDOWN, K_BACKSPACE, K_1, K_2, K_3
 
 #Initialize
 pygame.init()
@@ -53,12 +54,45 @@ view_button_4 = pygame.Rect(700, 690, 190, 85)
 running = True
 #The player's selected faction - 0 is none
 faction = 0
+# Level
+level = 1
 # Health
 total_health = 10000
 current_health = 10000
-#Store all of the outlaws (enemies)
-outlaws = []
+#XP for level
+required_XP = level*1000
+current_XP = 0
+#Used to update the enemies
+outlaw_counter = 0
+speedy_counter = 0
+brute_counter = 0
+shifter_counter = 0
+chief_counter = 0
 
+#Store all of the outlaws (Costs 50 hp) (Has TBD hp)
+outlaws = []
+# Which outlaws need to be removed
+pending_removal_outlaws = []
+
+#Store all of the speedy outlaws (Costs 50 hp) (Has TBD hp)
+speedy = []
+# Which speedy need to be removed
+pending_removal_speedy = []
+
+#Store all of the brutes (Costs 100 hp) (Has TBD hp)
+brutes = []
+# Which brutes need to be removed
+pending_removal_brutes = []
+
+#Store all of the shifters (Costs 25 hp) (Has TBD hp)
+shifters = []
+# Which shifters need to be removed
+pending_removal_shifters = []
+
+#Store all of the chiefs (Costs 250 hp) (Has TBD hp)
+chiefs = []
+# Which outlaws need to be removed
+pending_removal_chiefs = []
 
 
 
@@ -208,6 +242,20 @@ def left_hud(r,g,b):
     # Display Abilities
     abilities(5, 225, 255, 255, 255)
 
+#Display Level
+def level_display():
+    global required_XP
+    global current_XP
+    global level
+    #Level Bar (XP)
+    pygame.draw.rect(screen, (211, 211, 211), [5, 500, 190, 20], 0)
+    pygame.draw.rect(screen, (0, 204, 255), [5, 500, 190*(current_XP/required_XP), 20], 0)
+    #Experience Text (CP)
+    xp_text = health_font.render(f"{current_XP}/{required_XP}", True, (0, 0, 0))
+    screen.blit(xp_text, [60, 500])
+    #Level Text
+    level_text = health_font.render(f"Level {level}", True, (255, 255, 255))
+    screen.blit(level_text, [60, 475])
 # ---------------------------
 #Pyro Abilities
 def pyro_1():
@@ -215,10 +263,22 @@ def pyro_1():
 def pyro_2():
     s
 def pyro_ult():
-    s
+    #Wipes the whole board
+    outlaws.clear()
+    speedy.clear()
+    brutes.clear()
+    shifters.clear()
+    chiefs.clear()
+
 #Naturo Abilities
 def naturo_1():
-    s
+    global current_health
+    global total_health
+    amount_healed = 100
+    if current_health+amount_healed>=total_health:
+        current_health = total_health
+    else:
+        current_health += amount_healed
 def naturo_2():
     s
 def naturo_ult():
@@ -229,7 +289,7 @@ def cryo_1():
 def cryo_2():
     s
 def cryo_ult():
-    s
+    time.sleep(5)
 #Electro Abilities
 def electro_1():
     s
@@ -374,13 +434,10 @@ def run_menu():
                 play_hit = play_button.collidepoint(event.pos)
                 instructions_hit = instructions_button.collidepoint(event.pos)
                 if play_hit == 1:
-                    print("HIT PLAY")
                     entry_screen()
                 elif instructions_hit == 1:
-                    print("HIT RULES")
                     run_rules()
-                else:
-                    print("HIT NOTHING")
+
 
         # GAME STATE UPDATES
         # All game math and comparisons happen here
@@ -447,26 +504,290 @@ def run_rules():
 
 
 # ---------------------------
+def run_outlaws():
+    global outlaw_counter
+    global level
+    global current_health
+    global current_XP
+    global required_XP
+    global pending_removal_outlaws
+    # Add outlaws if outlaw counter is 0
+    if outlaw_counter == 0:
+        for i in range(level):
+            outlaws.append((1000, random.randint(0, 800)))
+    # Update current outlaws (Add them for removal if left hud is hit, otherwise move left)
+    for i in range(len(outlaws)):
+        if outlaws[i][0] <= 200:
+            current_health -= 500
+            pending_removal_outlaws.append(outlaws[i])
+        else:
+            outlaws[i] = (outlaws[i][0] - 1, outlaws[i][1])
+    # Remove everything that needs to be removed from the outlaws
+    for i in range(len(pending_removal_outlaws)):
+        # Test first (to protect against double clicks)
+        if outlaws.__contains__(pending_removal_outlaws[i]):
+            outlaws.remove(pending_removal_outlaws[i])
+    # Clear the pending
+    pending_removal_outlaws.clear()
+    # Update the counter
+    outlaw_counter = (outlaw_counter + 1) % 120
+    # Update Level
+    if current_XP >= required_XP:
+        level += 1
+        current_XP = 0
+        required_XP = level * 1000
+
+def run_speedy():
+    global speedy_counter
+    global level
+    global current_health
+    global current_XP
+    global required_XP
+    global pending_removal_speedy
+    # Add speedy if speedy counter is 0
+    if speedy_counter == 0:
+        for i in range(level):
+            speedy.append((1000, random.randint(0, 800)))
+    # Update current speedy (Add them for removal if left hud is hit, otherwise move left)
+    for i in range(len(speedy)):
+        if speedy[i][0] <= 200:
+            current_health -= 500
+            #Remove by value and not index now
+            pending_removal_speedy.append(speedy[i])
+        else:
+            speedy[i] = (speedy[i][0] - 5, speedy[i][1])
+    # Remove everything that needs to be removed from the speedy
+    for i in range(len(pending_removal_speedy)):
+        # Test first (to protect against double clicks)
+        if speedy.__contains__(pending_removal_speedy[i]):
+            speedy.remove(pending_removal_speedy[i])
+
+    # Clear the pending
+    pending_removal_speedy.clear()
+    # Update the counter
+    speedy_counter = (speedy_counter + 1) % 480
+    # Update Level
+    if current_XP >= required_XP:
+        level += 1
+        current_XP = 0
+        required_XP = level * 1000
+
+def run_brutes():
+    global brute_counter
+    global level
+    global current_health
+    global current_XP
+    global required_XP
+    global pending_removal_brutes
+    # Add brute if brute counter is 0
+    if brute_counter == 0:
+        for i in range(level):
+            brutes.append((1000, random.randint(0, 800)))
+    # Update current brutes (Add them for removal if left hud is hit, otherwise move left)
+    for i in range(len(brutes)):
+        if brutes[i][0] <= 200:
+            current_health -= 1000
+            pending_removal_brutes.append(brutes[i])
+        else:
+            brutes[i] = (brutes[i][0] - 0.5, brutes[i][1])
+    # Remove everything that needs to be removed from the outlaws
+    for i in range(len(pending_removal_brutes)):
+        # Test first (to protect against double clicks)
+        if brutes.__contains__(pending_removal_brutes[i]):
+            brutes.remove(pending_removal_brutes[i])
+    # Clear the pending
+    pending_removal_brutes.clear()
+    # Update the counter
+    brute_counter = (brute_counter + 1) % 480
+    # Update Level
+    if current_XP >= required_XP:
+        level += 1
+        current_XP = 0
+        required_XP = level * 1000
 
 
+def run_shifters():
+    global shifter_counter
+    global level
+    global current_health
+    global current_XP
+    global required_XP
+    global pending_removal_shifters
+    # Add shifter if shifter counter is 0
+    if shifter_counter == 0:
+        for i in range(level):
+            shifters.append((1000, random.randint(0, 800)))
+    # Update current shifters (Add them for removal if left hud is hit, otherwise move left)
+    for i in range(len(shifters)):
+        if shifters[i][0] <= 200:
+            current_health -= 500
+            pending_removal_shifters.append(shifters[i])
+        else:
+            shifters[i] = (shifters[i][0] - 0.5, shifters[i][1])
+    # Remove everything that needs to be removed from the shifters
+    for i in range(len(pending_removal_shifters)):
+        #Test first (to protect against double clicks)
+        if shifters.__contains__(pending_removal_shifters[i]):
+            shifters.remove(pending_removal_shifters[i])
+    # Clear the pending
+    pending_removal_shifters.clear()
+    # Update the counter
+    shifter_counter = (shifter_counter + 1) % 600
+    # Update Level
+    if current_XP >= required_XP:
+        level += 1
+        current_XP = 0
+        required_XP = level * 1000
+
+
+def run_chiefs():
+    global chief_counter
+    global level
+    global current_health
+    global current_XP
+    global required_XP
+    global pending_removal_chiefs
+    # Add chief if chief counter is 0
+    if chief_counter == 0:
+        for i in range(level):
+            chiefs.append((1000, random.randint(0, 750)))
+    # Update current chiefs (Add them for removal if left hud is hit, otherwise move left)
+    for i in range(len(chiefs)):
+        if chiefs[i][0] <= 200:
+            current_health -= 2500
+            pending_removal_chiefs.append(chiefs[i])
+        else:
+            chiefs[i] = (chiefs[i][0] - 0.5, chiefs[i][1])
+    # Remove everything that needs to be removed from the chiefs
+    for i in range(len(pending_removal_chiefs)):
+        #Test first (to protect against double clicks)
+        if chiefs.__contains__(pending_removal_chiefs[i]):
+            chiefs.remove(pending_removal_chiefs[i])
+    # Clear the pending
+    pending_removal_chiefs.clear()
+    # Update the counter
+    chief_counter = (chief_counter + 1) % 6000
+    # Update Level
+    if current_XP >= required_XP:
+        level += 1
+        current_XP = 0
+        required_XP = level * 1000
+
+
+
+# ---------------------------
+#Shifter rgb
+shifter_colour = 0
+shifter_direction = 1
 #ACTUAL CODE TO RUN GAME
-while running:
+while running and current_health > 0:
     run_menu()
     # EVENT HANDLING
     for event in pygame.event.get():
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 running = False
+            elif event.key == K_1:
+                if faction == 1:
+                    pyro_1()
+                elif faction == 2:
+                    naturo_1()
+                elif faction == 3:
+                    cryo_1()
+                else:
+                    electro_1()
+            elif event.key == K_2:
+                if faction == 1:
+                    pyro_2()
+                elif faction == 2:
+                    naturo_2()
+                elif faction == 3:
+                    cryo_2()
+                else:
+                    electro_2()
+            elif event.key == K_3:
+                if faction == 1:
+                    pyro_ult()
+                elif faction == 2:
+                    naturo_ult()
+                elif faction == 3:
+                    cryo_ult()
+                else:
+                    electro_ult()
         elif event.type == QUIT:
             running = False
+        elif event.type == MOUSEBUTTONDOWN:
+            #Test if something is hit
+            for i in range(len(outlaws)):
+                outlaw_hit = pygame.draw.circle(screen, (0, 0, 0), outlaws[i], 10).collidepoint(event.pos)
+                if outlaw_hit == 1:
+                    current_XP+=50
+                    pending_removal_outlaws.append((outlaws[i][0]-1, outlaws[i][1]))
+                    break
+            for i in range(len(speedy)):
+                speedy_hit = pygame.draw.circle(screen, (0, 0, 0), speedy[i], 10).collidepoint(event.pos)
+                if speedy_hit == 1:
+                    current_XP+=100
+                    pending_removal_speedy.append((speedy[i][0]-5, speedy[i][1]))
+                    break
+            for i in range(len(brutes)):
+                brute_hit = pygame.draw.circle(screen, (0, 0, 0), brutes[i], 25).collidepoint(event.pos)
+                if brute_hit == 1:
+                    current_XP+=250
+                    pending_removal_brutes.append((brutes[i][0]-0.5, brutes[i][1]))
+                    break
+            for i in range(len(shifters)):
+                shifter_hit = pygame.draw.circle(screen, (0, 0, 0), shifters[i], 15).collidepoint(event.pos)
+                if shifter_hit == 1:
+                    current_XP+=100
+                    pending_removal_shifters.append((shifters[i][0]-0.5, shifters[i][1]))
+                    break
+            for i in range(len(chiefs)):
+                chief_hit = pygame.Rect([chiefs[i][0], chiefs[i][1], 50, 50]).collidepoint(event.pos)
+                if chief_hit == 1:
+                    current_XP+=500
+                    pending_removal_chiefs.append((chiefs[i][0]-0.5, chiefs[i][1]))
+                    break
+
+
 
     # GAME STATE UPDATES
     # All game math and comparisons happen here
+    #SHIFT COLOUR
+    if shifter_colour == 255:
+        shifter_direction = -1
+        shifter_colour-=1
+    elif shifter_colour == 0:
+        shifter_direction = 1
+        shifter_colour+=1
+    else:
+        shifter_colour+=shifter_direction
+
+    run_outlaws()
+    run_speedy()
+    run_brutes()
+    run_shifters()
+    run_chiefs()
 
     # DRAWING
     screen.fill((255, 255, 255))  # always the first drawing command
     # LEFT SCREEN
     left_hud(current_faction_colour[0], current_faction_colour[1], current_faction_colour[2])
+    # LEVEL + XP DISPLAY
+    level_display()
+
+    # DRAW ENEMIES
+    for i in range(len(outlaws)):
+        pygame.draw.circle(screen, (0, 0, 0), outlaws[i], 10)
+    for i in range(len(speedy)):
+        pygame.draw.circle(screen, (150, 150, 150), speedy[i], 10)
+    for i in range(len(brutes)):
+        pygame.draw.circle(screen, (150, 0, 0), brutes[i], 25)
+    for i in range(len(shifters)):
+        pygame.draw.circle(screen, (shifter_colour, shifter_colour, shifter_colour), shifters[i], 15)
+    for i in range(len(chiefs)):
+        pygame.draw.rect(screen, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), [chiefs[i][0], chiefs[i][1], 50, 50], 0)
+
 
 
 
