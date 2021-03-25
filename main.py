@@ -1,7 +1,6 @@
 # pygame template
 import pygame
 import random
-import time
 from pygame.locals import K_ESCAPE, KEYDOWN, QUIT, MOUSEBUTTONDOWN, K_BACKSPACE, K_1, K_2, K_3
 
 #Initialize
@@ -15,7 +14,7 @@ screen = pygame.display.set_mode(SIZE)
 #Create clock
 clock = pygame.time.Clock()
 #Name the program
-pygame.display.set_caption("Faction Wars")
+pygame.display.set_caption("Faction Defence")
 
 # ---------------------------
 # Fonts
@@ -23,6 +22,7 @@ menu_font = pygame.font.SysFont("Georgia", 25, True, False)
 health_font = pygame.font.SysFont("Georgia", 14, True, False)
 game_font = pygame.font.SysFont("Georgia", 14, False, False)
 faction_name_font = pygame.font.SysFont("Georgia", 32, True, False)
+game_title_font = pygame.font.SysFont("Georgia", 96, True, False)
 
 # Colours
 DEFAULT = (49, 51, 53)
@@ -88,6 +88,7 @@ electro_1_cd = 0
 electro_2_cd = 0
 electro_3_cd = 0
 
+# ---------------------------
 
 #Store all of the outlaws (Costs 50 hp) (Has TBD hp)
 outlaws = []
@@ -117,15 +118,69 @@ pending_removal_chiefs = []
 
 
 # ---------------------------
+colour_oscillator = 0
+oscillation_direction = 1
 #Drawing Faction Icons
 def faction_1_icon(x, y):
+    global colour_oscillator
+    global oscillation_direction
     pygame.draw.rect(screen, (255, 0, 0), [x, y, 190, 190], 0)
+    name_text = faction_name_font.render("PYRO", True, (colour_oscillator,0,0))
+    screen.blit(name_text, [x + 50,y + 75])
+    # Update colour
+    if colour_oscillator == 0:
+        oscillation_direction = 1
+        colour_oscillator += 1
+    elif colour_oscillator == 255:
+        oscillation_direction = -1
+        colour_oscillator -= 1
+    else:
+        colour_oscillator+=oscillation_direction
 def faction_2_icon(x, y):
+    global colour_oscillator
+    global oscillation_direction
     pygame.draw.rect(screen, (0, 255, 0), [x, y, 190, 190], 0)
+    name_text = faction_name_font.render("NATURO", True, (0, colour_oscillator, 0))
+    screen.blit(name_text, [x + 20, y + 75])
+    # Update colour
+    if colour_oscillator == 0:
+        oscillation_direction = 1
+        colour_oscillator += 1
+    elif colour_oscillator == 255:
+        oscillation_direction = -1
+        colour_oscillator -= 1
+    else:
+        colour_oscillator += oscillation_direction
 def faction_3_icon(x, y):
+    global colour_oscillator
+    global oscillation_direction
     pygame.draw.rect(screen, (0, 0, 255), [x, y, 190, 190], 0)
+    name_text = faction_name_font.render("CRYO", True, (0, 0, colour_oscillator))
+    screen.blit(name_text, [x + 45, y + 75])
+    # Update colour
+    if colour_oscillator == 0:
+        oscillation_direction = 1
+        colour_oscillator += 1
+    elif colour_oscillator == 255:
+        oscillation_direction = -1
+        colour_oscillator -= 1
+    else:
+        colour_oscillator += oscillation_direction
 def faction_4_icon(x, y):
+    global colour_oscillator
+    global oscillation_direction
     pygame.draw.rect(screen, (255, 255, 0), [x, y, 190, 190], 0)
+    name_text = faction_name_font.render("ELECTRO", True, (colour_oscillator, colour_oscillator, 0))
+    screen.blit(name_text, [x + 15, y + 75])
+    # Update colour
+    if colour_oscillator == 0:
+        oscillation_direction = 1
+        colour_oscillator += 1
+    elif colour_oscillator == 255:
+        oscillation_direction = -1
+        colour_oscillator -= 1
+    else:
+        colour_oscillator += oscillation_direction
 
 # Faction 1 Info
 def view_faction1():
@@ -137,9 +192,11 @@ def view_faction1():
     screen.blit(faction_name_text, [300, 225])
     #Faction Description
     line_1 = game_font.render("The Pyro wield the elementary power of heat and fire", True, (0,0,0))
-    line_2 = game_font.render("WIP", True, (0,0,0))
+    line_2 = game_font.render("Strengths: High area damage and moderate sustain", True, (0,0,0))
+    line_3 = game_font.render("Weaknesses: No displacement and disruption effects", True, (0,0,0))
     screen.blit(line_1, [300, 275])
     screen.blit(line_2, [300, 300])
+    screen.blit(line_3, [300, 325])
     #Abilities icons
     abilities(300, 425, 0, 0, 0)
     #Abilities description
@@ -178,9 +235,11 @@ def view_faction2():
     screen.blit(faction_name_text, [300, 225])
     #Faction Description
     line_1 = game_font.render("The Naturo wield the ancient ability to harness nature and heal", True, (0,0,0))
-    line_2 = game_font.render("WIP", True, (0,0,0))
+    line_2 = game_font.render("Strengths: High sustain and moderate disruption effects", True, (0, 0, 0))
+    line_3 = game_font.render("Weaknesses: No damaging effects", True, (0, 0, 0))
     screen.blit(line_1, [300, 275])
     screen.blit(line_2, [300, 300])
+    screen.blit(line_3, [300, 325])
     #Abilities icons
     abilities(300, 425, 0, 0, 0)
     # Abilities description
@@ -218,9 +277,11 @@ def view_faction3():
     screen.blit(faction_name_text, [300, 225])
     #Faction Description
     line_1 = game_font.render("The Cryo wield the freezing weapons of water and ice", True, (0,0,0))
-    line_2 = game_font.render("WIP", True, (0,0,0))
+    line_2 = game_font.render("Strengths: High amount of disruption effects and moderate sustain", True, (0, 0, 0))
+    line_3 = game_font.render("Weaknesses: No damaging effects", True, (0, 0, 0))
     screen.blit(line_1, [300, 275])
     screen.blit(line_2, [300, 300])
+    screen.blit(line_3, [300, 325])
     #Abilities icons
     abilities(300, 425, 0, 0, 0)
     # Abilities description
@@ -258,9 +319,11 @@ def view_faction4():
     screen.blit(faction_name_text, [300, 225])
     #Faction Description
     line_1 = game_font.render("The Electro wield the innovative tools of light and electricity", True, (0,0,0))
-    line_2 = game_font.render("WIP", True, (0,0,0))
+    line_2 = game_font.render("Strengths: High area damage and moderate displacement effectd", True, (0, 0, 0))
+    line_3 = game_font.render("Weaknesses: No sustaining effects", True, (0, 0, 0))
     screen.blit(line_1, [300, 275])
     screen.blit(line_2, [300, 300])
+    screen.blit(line_3, [300, 325])
     #Abilities icons
     abilities(300, 425, 0, 0, 0)
     # Abilities description
@@ -758,6 +821,7 @@ def run_menu():
                 play_hit = play_button.collidepoint(event.pos)
                 instructions_hit = instructions_button.collidepoint(event.pos)
                 if play_hit == 1:
+                    menu_to_game_transition()
                     entry_screen()
                 elif instructions_hit == 1:
                     run_rules()
@@ -770,29 +834,58 @@ def run_menu():
         screen.fill((255, 255, 255))  # always the first drawing command
 
         # BACKGROUND
-        #Sky
-        for i in range (0, 200, 1):
-            pygame.draw.line(screen, (i,0,75), [0,2*i], [1000,2*i], 5)
-        #Grass
-        for i in range (0, 200, 1):
-            pygame.draw.line(screen, (0,i,0), [0,400+2*i], [1000,400+2 *i], 5)
+        # #Sky
+        # for i in range (0, 200, 1):
+        #     pygame.draw.line(screen, (i,0,75), [0,2*i], [1000,2*i], 5)
+        # #Grass
+        # for i in range (0, 200, 1):
+        #     pygame.draw.line(screen, (0,i,0), [0,400+2*i], [1000,400+2 *i], 5)
+
+        #Load wallpaper
+        image = pygame.image.load("castle_invasion.jpg")
+        screen.blit(image, (0, 0))
+        # Title
+        title_faction = game_title_font.render("Faction", True, (0, 0, 0))
+        title_wars = game_title_font.render("Defence", True, (0, 0, 0))
+        screen.blit(title_faction, [335, 5])
+        screen.blit(title_wars, [320, 90])
 
         # BUTTONS
-        #Shop Button
-        pygame.draw.ellipse(screen, (0, 0, 0), shop_button, 0)
-        shop_text = menu_font.render("SHOP", True, (255, 255, 0))
-        screen.blit(shop_text, [860, 735])
+        # #Shop Button
+        # pygame.draw.ellipse(screen, (0, 0, 0), shop_button, 0)
+        # shop_text = menu_font.render("SHOP", True, (255, 255, 0))
+        # screen.blit(shop_text, [860, 735])
         #Play button
         pygame.draw.ellipse(screen, (0, 0, 0), play_button, 0)
         play_text = menu_font.render("PLAY", True, (255, 255, 0))
         screen.blit(play_text, [460, 735])
-        #Instruction Button
-        pygame.draw.ellipse(screen, (0, 0, 0), instructions_button, 0)
-        rules_text = menu_font.render("RULES", True, (255, 255, 0))
-        screen.blit(rules_text, [50, 735])
+        # #Instruction Button
+        # pygame.draw.ellipse(screen, (0, 0, 0), instructions_button, 0)
+        # rules_text = menu_font.render("RULES", True, (255, 255, 0))
+        # screen.blit(rules_text, [50, 735])
 
         # Must be the last two lines
         # of the game loop
+        pygame.display.flip()
+        clock.tick(60)
+
+#Used to do the below transition
+transition_time = 300
+def menu_to_game_transition():
+    global transition_time
+    while transition_time > 0:
+        #Load wallpaper
+        image = pygame.image.load("castle_invasion.jpg")
+        screen.blit(image, (0, 0))
+        # Title
+        title_faction = game_title_font.render("Faction", True, (0, 0, 0))
+        title_wars = game_title_font.render("Defence", True, (0, 0, 0))
+        screen.blit(title_faction, [335, 5])
+        screen.blit(title_wars, [320, 90+10*(300-transition_time)])
+
+        FIX THIS UP
+        #Update transition_time
+        transition_time-=1
         pygame.display.flip()
         clock.tick(60)
 
@@ -819,6 +912,10 @@ def run_rules():
         for i in range(161):
             pygame.draw.line(screen, (80+i, 40+i, 60+i//2), [0,5*i], [1000,5*i], 5)
 
+        #Actual Rules
+        line_1 = faction_name_font.render("Instructions", True, (0, 0, 0))
+
+        screen.blit(line_1, [375, 5])
 
 
         # Must be the last two lines
