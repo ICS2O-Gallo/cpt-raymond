@@ -74,6 +74,20 @@ speedy_speed = 5
 brute_speed = 0.5
 shifter_speed = 1
 chief_speed = 0.5
+#Cooldown Counters - 0 is on cooldown
+pyro_1_cd = 0
+pyro_2_cd = 0
+pyro_3_cd = 0
+naturo_1_cd = 0
+naturo_2_cd = 0
+naturo_3_cd = 0
+cryo_1_cd = 0
+cryo_2_cd = 0
+cryo_3_cd = 0
+electro_1_cd = 0
+electro_2_cd = 0
+electro_3_cd = 0
+
 
 #Store all of the outlaws (Costs 50 hp) (Has TBD hp)
 outlaws = []
@@ -122,12 +136,38 @@ def view_faction1():
     faction_name_text = faction_name_font.render("Faction: PYRO", True, (255,0,0))
     screen.blit(faction_name_text, [300, 225])
     #Faction Description
-    line_1 = game_font.render("The Pyro wield the elementary power of heat and fire.", True, (0,0,0))
+    line_1 = game_font.render("The Pyro wield the elementary power of heat and fire", True, (0,0,0))
     line_2 = game_font.render("WIP", True, (0,0,0))
     screen.blit(line_1, [300, 275])
     screen.blit(line_2, [300, 300])
-    #Abilities
+    #Abilities icons
     abilities(300, 425, 0, 0, 0)
+    #Abilities description
+    #Basic Attack
+    basic = game_font.render("Mouse clicks kill a single enemy and plunder experience", True, (0,0,0))
+    screen.blit(basic, [355, 425])
+    #Ability 1
+    ability_1_ln1 = game_font.render("Go on a fiery rampage!!!", True, (0,0,0))
+    ability_1_ln2 = game_font.render("Your next 5 basic attacks restore 100 health and reduce all cooldowns by 1 second", True, (0,0,0))
+    ability_1_cd = game_font.render(f"Cooldown: 5 seconds", True, (0,0,0))
+    screen.blit(ability_1_ln1, [355, 480])
+    screen.blit(ability_1_ln2, [355, 494])
+    screen.blit(ability_1_cd, [355, 508])
+    #Ability 2
+    ability_2_ln1 = game_font.render("Launch a fireball with radius 100, killing all units hit", True, (0,0,0))
+    ability_2_ln2 = game_font.render("Note: Does not plunder experience", True, (0,0,0))
+    ability_2_cd = game_font.render(f"Cooldown: 5 seconds", True, (0, 0, 0))
+    screen.blit(ability_2_ln1, [355, 535])
+    screen.blit(ability_2_ln2, [355, 549])
+    screen.blit(ability_2_cd, [355, 563])
+    #Ability 3
+    ability_3_ln1 = game_font.render("Instantly incinerate all enemies on the battlefield", True, (0,0,0))
+    ability_3_ln2 = game_font.render("Note: Does not plunder experience", True, (0,0,0))
+    ability_3_cd = game_font.render(f"Cooldown: 20 seconds", True, (0, 0, 0))
+    screen.blit(ability_3_ln1, [355, 590])
+    screen.blit(ability_3_ln2, [355, 604])
+    screen.blit(ability_3_cd, [355, 618])
+
 # Faction 2 Info
 def view_faction2():
     #Icon
@@ -137,12 +177,37 @@ def view_faction2():
     faction_name_text = faction_name_font.render("Faction: NATURO", True, (0,255,0))
     screen.blit(faction_name_text, [300, 225])
     #Faction Description
-    line_1 = game_font.render("The Naturo wield the ancient ability to harness nature and heal.", True, (0,0,0))
+    line_1 = game_font.render("The Naturo wield the ancient ability to harness nature and heal", True, (0,0,0))
     line_2 = game_font.render("WIP", True, (0,0,0))
     screen.blit(line_1, [300, 275])
     screen.blit(line_2, [300, 300])
-    #Abilities
+    #Abilities icons
     abilities(300, 425, 0, 0, 0)
+    # Abilities description
+    # Basic Attack
+    basic = game_font.render("Mouse clicks kill a single enemy and plunder experience", True, (0, 0, 0))
+    screen.blit(basic, [355, 425])
+    # Ability 1
+    ability_1_ln1 = game_font.render("Harness natural vegetation to heal for a small amount", True, (0, 0, 0))
+    ability_1_ln2 = game_font.render("Instantly restore 250 health", True, (0, 0, 0))
+    ability_1_cd = game_font.render(f"Cooldown: 2 seconds", True, (0, 0, 0))
+    screen.blit(ability_1_ln1, [355, 480])
+    screen.blit(ability_1_ln2, [355, 494])
+    screen.blit(ability_1_cd, [355, 508])
+    # Ability 2
+    ability_2_ln1 = game_font.render("Hijack the evolutionary tree to alter the enemies' size", True, (0, 0, 0))
+    ability_2_ln2 = game_font.render("All enemies are doubled in size for 3 seconds", True, (0, 0, 0))
+    ability_2_cd = game_font.render(f"Cooldown: 5 seconds", True, (0, 0, 0))
+    screen.blit(ability_2_ln1, [355, 535])
+    screen.blit(ability_2_ln2, [355, 549])
+    screen.blit(ability_2_cd, [355, 563])
+    # Ability 3
+    ability_3_ln1 = game_font.render("Harness the inconceivably immense power of grapes to heal for a large amount", True, (0, 0, 0))
+    ability_3_ln2 = game_font.render("Instantly restore 50% of missing health", True, (0, 0, 0))
+    ability_3_cd = game_font.render(f"Cooldown: 10 seconds", True, (0, 0, 0))
+    screen.blit(ability_3_ln1, [355, 590])
+    screen.blit(ability_3_ln2, [355, 604])
+    screen.blit(ability_3_cd, [355, 618])
 # Faction 3 Info
 def view_faction3():
     #Icon
@@ -152,12 +217,37 @@ def view_faction3():
     faction_name_text = faction_name_font.render("Faction: CRYO", True, (0,0,255))
     screen.blit(faction_name_text, [300, 225])
     #Faction Description
-    line_1 = game_font.render("The Cryo wield the freezing weapons of water and ice.", True, (0,0,0))
+    line_1 = game_font.render("The Cryo wield the freezing weapons of water and ice", True, (0,0,0))
     line_2 = game_font.render("WIP", True, (0,0,0))
     screen.blit(line_1, [300, 275])
     screen.blit(line_2, [300, 300])
-    #Abilities
+    #Abilities icons
     abilities(300, 425, 0, 0, 0)
+    # Abilities description
+    # Basic Attack
+    basic = game_font.render("Mouse clicks kill a single enemy and plunder experience", True, (0, 0, 0))
+    screen.blit(basic, [355, 425])
+    # Ability 1
+    ability_1_ln1 = game_font.render("Apply cryotherapy to heal a moderate amount", True, (0, 0, 0))
+    ability_1_ln2 = game_font.render("Restore 1200 health over 10 seconds", True, (0, 0, 0))
+    ability_1_cd = game_font.render(f"Cooldown: 15 seconds", True, (0, 0, 0))
+    screen.blit(ability_1_ln1, [355, 480])
+    screen.blit(ability_1_ln2, [355, 494])
+    screen.blit(ability_1_cd, [355, 508])
+    # Ability 2
+    ability_2_ln1 = game_font.render("Create a cold gust of wind", True, (0, 0, 0))
+    ability_2_ln2 = game_font.render("Slows all enemies by 75% for 4 seconds", True, (0, 0, 0))
+    ability_2_cd = game_font.render(f"Cooldown: 6 seconds", True, (0, 0, 0))
+    screen.blit(ability_2_ln1, [355, 535])
+    screen.blit(ability_2_ln2, [355, 549])
+    screen.blit(ability_2_cd, [355, 563])
+    # Ability 3
+    ability_3_ln1 = game_font.render("Conjure a freezing blizzard", True, (0, 0, 0))
+    ability_3_ln2 = game_font.render("Freezes all enemies in place for 8 seconds", True, (0, 0, 0))
+    ability_3_cd = game_font.render(f"Cooldown: 15 seconds", True, (0, 0, 0))
+    screen.blit(ability_3_ln1, [355, 590])
+    screen.blit(ability_3_ln2, [355, 604])
+    screen.blit(ability_3_cd, [355, 618])
 # Faction 4 Info
 def view_faction4():
     #Icon
@@ -167,12 +257,37 @@ def view_faction4():
     faction_name_text = faction_name_font.render("Faction: ELECTRO", True, (255,255,0))
     screen.blit(faction_name_text, [300, 225])
     #Faction Description
-    line_1 = game_font.render("The Electro wield the innovative tools of light and electricity.", True, (0,0,0))
+    line_1 = game_font.render("The Electro wield the innovative tools of light and electricity", True, (0,0,0))
     line_2 = game_font.render("WIP", True, (0,0,0))
     screen.blit(line_1, [300, 275])
     screen.blit(line_2, [300, 300])
-    #Abilities
+    #Abilities icons
     abilities(300, 425, 0, 0, 0)
+    # Abilities description
+    # Basic Attack
+    basic = game_font.render("Mouse clicks kill a single enemy and plunder experience", True, (0, 0, 0))
+    screen.blit(basic, [355, 425])
+    # Ability 1
+    ability_1_ln1 = game_font.render("Warp space-time to concentrate all enemies on target location", True, (0, 0, 0))
+    ability_1_ln2 = game_font.render("Note: No damage is dealt to any enemies", True, (0, 0, 0))
+    ability_1_cd = game_font.render(f"Cooldown: 10 seconds", True, (0, 0, 0))
+    screen.blit(ability_1_ln1, [355, 480])
+    screen.blit(ability_1_ln2, [355, 494])
+    screen.blit(ability_1_cd, [355, 508])
+    # Ability 2
+    ability_2_ln1 = game_font.render("Launch an electric ray in a line, killing all units whose centre is hit", True, (0, 0, 0))
+    ability_2_ln2 = game_font.render("Note: Does not plunder experience", True, (0, 0, 0))
+    ability_2_cd = game_font.render(f"Cooldown: 8 seconds", True, (0, 0, 0))
+    screen.blit(ability_2_ln1, [355, 535])
+    screen.blit(ability_2_ln2, [355, 549])
+    screen.blit(ability_2_cd, [355, 563])
+    # Ability 3
+    ability_3_ln1 = game_font.render("Create a circular zap field which follows the cursor for 7 seconds, killing all units hit", True, (0, 0, 0))
+    ability_3_ln2 = game_font.render("Note: Does not plunder experience", True, (0, 0, 0))
+    ability_3_cd = game_font.render(f"Cooldown: 30 seconds", True, (0, 0, 0))
+    screen.blit(ability_3_ln1, [355, 590])
+    screen.blit(ability_3_ln2, [355, 604])
+    screen.blit(ability_3_cd, [355, 618])
 
 #Display Faction select
 def faction_select():
@@ -217,19 +332,49 @@ def abilities(x, y, r, g, b):
     # Basic Attack (Click)
     pygame.draw.rect(screen, (r, g, b), [x, y, 50, 50], 0)
     passive_text = game_font.render("B", True, (255-r, 255-g, 255-b))
-    screen.blit(passive_text, [x+2, y])
-    # Ability 1
+    screen.blit(passive_text, [x + 2, y])
+    # Ability 1 icon
     pygame.draw.rect(screen, (r, g, b), [x, y+55, 50, 50], 0)
     a1_text = game_font.render("1", True, (255 - r, 255 - g, 255 - b))
-    screen.blit(a1_text, [x+2, y+55])
-    # Ability 2
+    screen.blit(a1_text, [x + 2, y + 55])
+    # Ability 2 icon
     pygame.draw.rect(screen, (r, g, b), [x, y+110, 50, 50], 0)
     a2_text = game_font.render("2", True, (255 - r, 255 - g, 255 - b))
-    screen.blit(a2_text, [x+2, y+110])
-    # Ultimate Ability
+    screen.blit(a2_text, [x + 2, y + 110])
+    # Ultimate Ability icon
     pygame.draw.rect(screen, (r, g, b), [x, y+165, 50, 50], 0)
     ult_text = game_font.render("3", True, (255 - r, 255 - g, 255 - b))
-    screen.blit(ult_text, [x+2, y+165])
+    screen.blit(ult_text, [x + 2, y + 165])
+
+    # Ability CD display
+    if faction == 1:
+        a_1_cd_text = game_font.render(str(round(pyro_1_cd / 60, 2)), True, (255 - r, 255 - g, 255 - b))
+        a_2_cd_text = game_font.render(str(round(pyro_2_cd / 60, 2)), True, (255 - r, 255 - g, 255 - b))
+        a_3_cd_text = game_font.render(str(round(pyro_3_cd / 60, 2)), True, (255 - r, 255 - g, 255 - b))
+        screen.blit(a_1_cd_text, [x + 2, y + 75])
+        screen.blit(a_2_cd_text, [x + 2, y + 130])
+        screen.blit(a_3_cd_text, [x + 2, y + 185])
+    elif faction == 2:
+        a_1_cd_text = game_font.render(str(round(naturo_1_cd / 60, 2)), True, (255 - r, 255 - g, 255 - b))
+        a_2_cd_text = game_font.render(str(round(naturo_2_cd / 60, 2)), True, (255 - r, 255 - g, 255 - b))
+        a_3_cd_text = game_font.render(str(round(naturo_3_cd / 60, 2)), True, (255 - r, 255 - g, 255 - b))
+        screen.blit(a_1_cd_text, [x + 2, y + 75])
+        screen.blit(a_2_cd_text, [x + 2, y + 130])
+        screen.blit(a_3_cd_text, [x + 2, y + 185])
+    elif faction == 3:
+        a_1_cd_text = game_font.render(str(round(cryo_1_cd / 60, 2)), True, (255 - r, 255 - g, 255 - b))
+        a_2_cd_text = game_font.render(str(round(cryo_2_cd / 60, 2)), True, (255 - r, 255 - g, 255 - b))
+        a_3_cd_text = game_font.render(str(round(cryo_3_cd / 60, 2)), True, (255 - r, 255 - g, 255 - b))
+        screen.blit(a_1_cd_text, [x + 2, y + 75])
+        screen.blit(a_2_cd_text, [x + 2, y + 130])
+        screen.blit(a_3_cd_text, [x + 2, y + 185])
+    elif faction == 4:
+        a_1_cd_text = game_font.render(str(round(electro_1_cd / 60, 2)), True, (255 - r, 255 - g, 255 - b))
+        a_2_cd_text = game_font.render(str(round(electro_2_cd / 60, 2)), True, (255 - r, 255 - g, 255 - b))
+        a_3_cd_text = game_font.render(str(round(electro_3_cd / 60, 2)), True, (255 - r, 255 - g, 255 - b))
+        screen.blit(a_1_cd_text, [x + 2, y + 75])
+        screen.blit(a_2_cd_text, [x + 2, y + 130])
+        screen.blit(a_3_cd_text, [x + 2, y + 185])
 
 #Display Left HUD
 def left_hud(r,g,b):
@@ -267,78 +412,127 @@ def level_display():
 #Healing Attacks Counter - 0 means none left
 healing_attacks = 0
 def pyro_1():
-    global healing_attacks
-    healing_attacks = 5
-def pyro_2(x,y):
-    aoe_circle = pygame.draw.circle(screen, (255, 125, 0), [x,y], 50)
-    for i in range(len(outlaws)):
-        aoe_hit = aoe_circle.collidepoint(outlaws[i])
-        if aoe_hit == 1:
-            pending_removal_outlaws.append((outlaws[i][0]-outlaw_speed, outlaws[i][1]))
-    for i in range(len(speedy)):
-        aoe_hit = aoe_circle.collidepoint(speedy[i])
-        if aoe_hit == 1:
-            pending_removal_speedy.append((speedy[i][0]-speedy_speed, speedy[i][1]))
-    for i in range(len(brutes)):
-        aoe_hit = aoe_circle.collidepoint(brutes[i])
-        if aoe_hit == 1:
-            pending_removal_brutes.append((brutes[i][0]-brute_speed, brutes[i][1]))
-    for i in range(len(shifters)):
-        aoe_hit = aoe_circle.collidepoint(shifters[i])
-        if aoe_hit == 1:
-            pending_removal_shifters.append((shifters[i][0]-shifter_speed, shifters[i][1]))
-    for i in range(len(chiefs)):
-        aoe_hit = aoe_circle.collidepoint(chiefs[i])
-        if aoe_hit == 1:
-            pending_removal_chiefs.append((chiefs[i][0]-chief_speed, chiefs[i][1]))
+    global pyro_1_cd
+    if pyro_1_cd == 0:
+        global healing_attacks
+        healing_attacks = 5
+        #Update cooldown
+        pyro_1_cd = 300
 
+#Animating the circle
+circle_time = 0
+circle_x = -1
+circle_y = -1
+def pyro_2(x,y):
+    global circle_time
+    global pyro_2_cd
+    global circle_x
+    global circle_y
+    if pyro_2_cd == 0:
+        circle_time = 20
+        #For displaying the explosion circle
+        circle_x = x
+        circle_y = y
+        aoe_circle = pygame.draw.circle(screen, (255, 125, 0), [x,y], 100)
+        for i in range(len(outlaws)):
+            aoe_hit = aoe_circle.collidepoint(outlaws[i])
+            if aoe_hit == 1:
+                pending_removal_outlaws.append((outlaws[i][0]-outlaw_speed, outlaws[i][1]))
+        for i in range(len(speedy)):
+            aoe_hit = aoe_circle.collidepoint(speedy[i])
+            if aoe_hit == 1:
+                pending_removal_speedy.append((speedy[i][0]-speedy_speed, speedy[i][1]))
+        for i in range(len(brutes)):
+            aoe_hit = aoe_circle.collidepoint(brutes[i])
+            if aoe_hit == 1:
+                pending_removal_brutes.append((brutes[i][0]-brute_speed, brutes[i][1]))
+        for i in range(len(shifters)):
+            aoe_hit = aoe_circle.collidepoint(shifters[i])
+            if aoe_hit == 1:
+                pending_removal_shifters.append((shifters[i][0]-shifter_speed, shifters[i][1]))
+        for i in range(len(chiefs)):
+            aoe_hit = aoe_circle.collidepoint(chiefs[i])
+            if aoe_hit == 1:
+                pending_removal_chiefs.append((chiefs[i][0]-chief_speed, chiefs[i][1]))
+        # Update cooldown
+        pyro_2_cd = 300
 
 def pyro_ult():
-    #Wipes the whole board
-    outlaws.clear()
-    speedy.clear()
-    brutes.clear()
-    shifters.clear()
-    chiefs.clear()
+    global pyro_3_cd
+    if pyro_3_cd == 0:
+        #Wipes the whole board
+        outlaws.clear()
+        speedy.clear()
+        brutes.clear()
+        shifters.clear()
+        chiefs.clear()
+        pyro_3_cd = 1200
+
 
 #Naturo Abilities
 def naturo_1():
     global current_health
     global total_health
-    amount_healed = 100
-    if current_health+amount_healed>=total_health:
-        current_health = total_health
-    else:
-        current_health += amount_healed
+    global naturo_1_cd
+    if naturo_1_cd == 0:
+        amount_healed = 250
+        if current_health+amount_healed>=total_health:
+            current_health = total_health
+        else:
+            current_health += amount_healed
+        # Update cooldown
+        naturo_1_cd = 120
 
 #Time under polymorph
 polymorph_time_counter = 0
 def naturo_2():
     global polymorph_time_counter
-    polymorph_time_counter = 180
+    global naturo_2_cd
+    if naturo_2_cd == 0:
+        polymorph_time_counter = 180
+        # Update cooldown
+        naturo_2_cd = 300
 
 def naturo_ult():
     global current_health
     global total_health
-    amount_healed = int(0.5*(total_health-current_health))
-    current_health+=amount_healed
+    global naturo_3_cd
+    if naturo_3_cd == 0:
+        amount_healed = int(0.5*(total_health-current_health))
+        current_health+=amount_healed
+        # Update cooldown
+        naturo_3_cd = 600
+
 
 #Cryo Abilities
 #Healing time
 cryo_time = 0
 def cryo_1():
     global cryo_time
-    cryo_time = 600
+    global cryo_1_cd
+    if cryo_1_cd == 0:
+        cryo_time = 600
+        # Update cooldown
+        cryo_1_cd = 900
+
 #Slow time
 slow_time = 0
 def cryo_2():
     global slow_time
-    slow_time = 180
+    global cryo_2_cd
+    if cryo_2_cd == 0:
+        slow_time = 240
+        # Update cooldown
+        cryo_2_cd = 360
 #Freeze time
 freeze_time = 0
 def cryo_ult():
     global freeze_time
-    freeze_time = 300
+    global cryo_3_cd
+    if cryo_3_cd == 0:
+        freeze_time = 480
+        # Update cooldown
+        cryo_3_cd = 900
 
 #DELETE (JUST A PLACEHOLDER TO SEE WHERE THE ABILITY FUNCTIONSS ARE)
 def delet():
@@ -346,9 +540,9 @@ def delet():
     u
     s
     t
-    
+
     a
-    
+
     p
     l
     a
@@ -364,16 +558,21 @@ def delet():
 
 #Electro Abilities
 def electro_1(x, y):
-    for i in range(len(outlaws)):
-        outlaws[i] = (x, y)
-    for i in range(len(speedy)):
-        speedy[i] = (x, y)
-    for i in range(len(brutes)):
-        brutes[i] = (x, y)
-    for i in range(len(shifters)):
-        shifters[i] = (x, y)
-    for i in range(len(chiefs)):
-        chiefs[i] = (x, y)
+    global electro_1_cd
+    if electro_1_cd == 0:
+        for i in range(len(outlaws)):
+            outlaws[i] = (x, y)
+        for i in range(len(speedy)):
+            speedy[i] = (x, y)
+        for i in range(len(brutes)):
+            brutes[i] = (x, y)
+        for i in range(len(shifters)):
+            shifters[i] = (x, y)
+        for i in range(len(chiefs)):
+            chiefs[i] = (x, y)
+
+        # Update cooldown
+        electro_1_cd = 600
 
 #Animating the Line
 line_time = 0
@@ -381,39 +580,51 @@ line_y = -1
 def electro_2(y):
     global line_time
     global line_y
-    line_time = 20
-    aoe_line = pygame.draw.rect(screen, (255, 255, 0), [200, y-8, 800, 16], 0)
+    global electro_2_cd
+    if electro_2_cd == 0:
+        line_time = 20
+        aoe_line = pygame.draw.rect(screen, (255, 255, 0), [200, y-8, 800, 16], 0)
 
-    line_y = y
-    for i in range(len(outlaws)):
-        aoe_hit = aoe_line.collidepoint(outlaws[i])
-        if aoe_hit == 1:
-            pending_removal_outlaws.append((outlaws[i][0]-outlaw_speed, outlaws[i][1]))
-    for i in range(len(speedy)):
-        aoe_hit = aoe_line.collidepoint(speedy[i])
-        if aoe_hit == 1:
-            pending_removal_speedy.append((speedy[i][0]-speedy_speed, speedy[i][1]))
-    for i in range(len(brutes)):
-        aoe_hit = aoe_line.collidepoint(brutes[i])
-        if aoe_hit == 1:
-            pending_removal_brutes.append((brutes[i][0]-brute_speed, brutes[i][1]))
-    for i in range(len(shifters)):
-        aoe_hit = aoe_line.collidepoint(shifters[i])
-        if aoe_hit == 1:
-            pending_removal_shifters.append((shifters[i][0]-shifter_speed, shifters[i][1]))
-    for i in range(len(chiefs)):
-        aoe_hit = aoe_line.collidepoint(chiefs[i])
-        if aoe_hit == 1:
-            pending_removal_chiefs.append((chiefs[i][0]-chief_speed, chiefs[i][1]))
+        #line_y is for displaying the line
+        line_y = y
+        for i in range(len(outlaws)):
+            aoe_hit = aoe_line.collidepoint(outlaws[i])
+            if aoe_hit == 1:
+                pending_removal_outlaws.append((outlaws[i][0]-outlaw_speed, outlaws[i][1]))
+        for i in range(len(speedy)):
+            aoe_hit = aoe_line.collidepoint(speedy[i])
+            if aoe_hit == 1:
+                pending_removal_speedy.append((speedy[i][0]-speedy_speed, speedy[i][1]))
+        for i in range(len(brutes)):
+            aoe_hit = aoe_line.collidepoint(brutes[i])
+            if aoe_hit == 1:
+                pending_removal_brutes.append((brutes[i][0]-brute_speed, brutes[i][1]))
+        for i in range(len(shifters)):
+            aoe_hit = aoe_line.collidepoint(shifters[i])
+            if aoe_hit == 1:
+                pending_removal_shifters.append((shifters[i][0]-shifter_speed, shifters[i][1]))
+        for i in range(len(chiefs)):
+            aoe_hit = aoe_line.collidepoint(chiefs[i])
+            if aoe_hit == 1:
+                pending_removal_chiefs.append((chiefs[i][0]-chief_speed, chiefs[i][1]))
+
+        # Update cooldown
+        electro_2_cd = 480
+
 #Time left on the shockwave
 shockwave_time = 0
 def electro_ult():
     global shockwave_time
-    shockwave_time = 300
+    global electro_3_cd
+    if electro_3_cd == 0:
+        shockwave_time = 360
+        # Update cooldown
+        electro_3_cd = 1800
 
 
 
 # ---------------------------
+
 #Display entry screen with the left HUD and faction select
 def entry_screen():
     #Health
@@ -631,7 +842,7 @@ def run_outlaws():
     # Update current outlaws (Add them for removal if left hud is hit, otherwise move left)
     for i in range(len(outlaws)):
         if outlaws[i][0] <= 200:
-            current_health -= 500
+            current_health -= 100
             pending_removal_outlaws.append(outlaws[i])
         else:
             outlaws[i] = (outlaws[i][0]-outlaw_speed, outlaws[i][1])
@@ -678,7 +889,7 @@ def run_speedy():
     # Clear the pending
     pending_removal_speedy.clear()
     # Update the counter
-    speedy_counter = (speedy_counter + 1) % 480
+    speedy_counter = (speedy_counter + 1) % 720
     # Update Level
     if current_XP >= required_XP:
         level += 1
@@ -929,13 +1140,27 @@ while running and current_health > 0:
                     current_health = total_health
                 else:
                     current_health+=100
+                #Reduces Coooldowns too
+                if pyro_1_cd > 60:
+                    pyro_1_cd-=60
+                else:
+                    pyro_1_cd = 0
+                if pyro_2_cd > 60:
+                    pyro_2_cd-=60
+                else:
+                    pyro_2_cd = 0
+                if pyro_3_cd > 60:
+                    pyro_3_cd-=60
+                else:
+                    pyro_3_cd = 0
+                #Decrease number left
                 healing_attacks-=1
 
 
 
     # GAME STATE UPDATES
     # All game math and comparisons happen here
-    #SHIFT COLOUR
+    #SHIFT COLOUR FOR SHIFTERS
     if shifter_colour == 255:
         shifter_direction = -1
         shifter_colour-=1
@@ -945,11 +1170,40 @@ while running and current_health > 0:
     else:
         shifter_colour+=shifter_direction
 
+    #Load the enemies
     run_outlaws()
     run_speedy()
     run_brutes()
     run_shifters()
     run_chiefs()
+
+    #Update cds
+    if pyro_1_cd > 0:
+        pyro_1_cd -= 1
+    if pyro_2_cd > 0:
+        pyro_2_cd -= 1
+    if pyro_3_cd > 0:
+        pyro_3_cd -= 1
+    if naturo_1_cd > 0:
+        naturo_1_cd -= 1
+    if naturo_2_cd > 0:
+        naturo_2_cd -= 1
+    if naturo_3_cd > 0:
+        naturo_3_cd -= 1
+    if cryo_1_cd > 0:
+        cryo_1_cd -= 1
+    if cryo_2_cd > 0:
+        cryo_2_cd -= 1
+    if cryo_3_cd > 0:
+        cryo_3_cd -= 1
+    if electro_1_cd > 0:
+        electro_1_cd -= 1
+    if electro_2_cd > 0:
+        electro_2_cd -= 1
+    if electro_3_cd > 0:
+        electro_3_cd -= 1
+
+
 
     # DRAWING
     screen.fill((255, 255, 255))  # always the first drawing command
@@ -983,10 +1237,15 @@ while running and current_health > 0:
             pygame.draw.rect(screen, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), [chiefs[i][0], chiefs[i][1], 100, 100], 0)
         polymorph_time_counter-=1
 
+    #Draw circle for Pyro's ability 2
+    if circle_time > 0:
+        pygame.draw.circle(screen, (12*circle_time, 6*circle_time, 0), [circle_x, circle_y], 100)
+        circle_time-=1
+
     #Apply healing for Cryo's ability 1
     if cryo_time > 0:
         if current_health!=total_health:
-            current_health+=1
+            current_health+=2
         cryo_time-=1
 
     #Apply slow for Cryo's ability 2
@@ -1018,7 +1277,6 @@ while running and current_health > 0:
         brute_counter-=1
         shifter_counter-=1
         chief_counter-=1
-
 
 
 
