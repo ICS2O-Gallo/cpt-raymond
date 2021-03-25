@@ -15,7 +15,7 @@ screen = pygame.display.set_mode(SIZE)
 #Create clock
 clock = pygame.time.Clock()
 #Name the program
-pygame.display.set_caption("ENTER TITLE")
+pygame.display.set_caption("Faction Wars")
 
 # ---------------------------
 # Fonts
@@ -62,12 +62,18 @@ current_health = 10000
 #XP for level
 required_XP = level*1000
 current_XP = 0
-#Used to update the enemies
+#Used to update the enemies (add new enemies)
 outlaw_counter = 0
 speedy_counter = 0
 brute_counter = 0
 shifter_counter = 0
 chief_counter = 0
+#Speed of the enemies (can be altered through abilities)
+outlaw_speed = 1
+speedy_speed = 5
+brute_speed = 0.5
+shifter_speed = 1
+chief_speed = 0.5
 
 #Store all of the outlaws (Costs 50 hp) (Has TBD hp)
 outlaws = []
@@ -258,10 +264,35 @@ def level_display():
     screen.blit(level_text, [60, 475])
 # ---------------------------
 #Pyro Abilities
+#Healing Attacks Counter - 0 means none left
+healing_attacks = 0
 def pyro_1():
-    s
-def pyro_2():
-    s
+    global healing_attacks
+    healing_attacks = 5
+def pyro_2(x,y):
+    aoe_circle = pygame.draw.circle(screen, (255, 125, 0), [x,y], 50)
+    for i in range(len(outlaws)):
+        aoe_hit = aoe_circle.collidepoint(outlaws[i])
+        if aoe_hit == 1:
+            pending_removal_outlaws.append((outlaws[i][0]-outlaw_speed, outlaws[i][1]))
+    for i in range(len(speedy)):
+        aoe_hit = aoe_circle.collidepoint(speedy[i])
+        if aoe_hit == 1:
+            pending_removal_speedy.append((speedy[i][0]-speedy_speed, speedy[i][1]))
+    for i in range(len(brutes)):
+        aoe_hit = aoe_circle.collidepoint(brutes[i])
+        if aoe_hit == 1:
+            pending_removal_brutes.append((brutes[i][0]-brute_speed, brutes[i][1]))
+    for i in range(len(shifters)):
+        aoe_hit = aoe_circle.collidepoint(shifters[i])
+        if aoe_hit == 1:
+            pending_removal_shifters.append((shifters[i][0]-shifter_speed, shifters[i][1]))
+    for i in range(len(chiefs)):
+        aoe_hit = aoe_circle.collidepoint(chiefs[i])
+        if aoe_hit == 1:
+            pending_removal_chiefs.append((chiefs[i][0]-chief_speed, chiefs[i][1]))
+
+
 def pyro_ult():
     #Wipes the whole board
     outlaws.clear()
@@ -279,24 +310,106 @@ def naturo_1():
         current_health = total_health
     else:
         current_health += amount_healed
+
+#Time under polymorph
+polymorph_time_counter = 0
 def naturo_2():
-    s
+    global polymorph_time_counter
+    polymorph_time_counter = 180
+
 def naturo_ult():
-    s
+    global current_health
+    global total_health
+    amount_healed = int(0.5*(total_health-current_health))
+    current_health+=amount_healed
+
 #Cryo Abilities
+#Healing time
+cryo_time = 0
 def cryo_1():
-    s
+    global cryo_time
+    cryo_time = 600
+#Slow time
+slow_time = 0
 def cryo_2():
-    s
+    global slow_time
+    slow_time = 180
+#Freeze time
+freeze_time = 0
 def cryo_ult():
-    time.sleep(5)
+    global freeze_time
+    freeze_time = 300
+
+#DELETE (JUST A PLACEHOLDER TO SEE WHERE THE ABILITY FUNCTIONSS ARE)
+def delet():
+    j
+    u
+    s
+    t
+    
+    a
+    
+    p
+    l
+    a
+    c
+    e
+    h
+    o
+    l
+    d
+    e
+    r
+
+
 #Electro Abilities
-def electro_1():
-    s
-def electro_2():
-    s
+def electro_1(x, y):
+    for i in range(len(outlaws)):
+        outlaws[i] = (x, y)
+    for i in range(len(speedy)):
+        speedy[i] = (x, y)
+    for i in range(len(brutes)):
+        brutes[i] = (x, y)
+    for i in range(len(shifters)):
+        shifters[i] = (x, y)
+    for i in range(len(chiefs)):
+        chiefs[i] = (x, y)
+
+#Animating the Line
+line_time = 0
+line_y = -1
+def electro_2(y):
+    global line_time
+    global line_y
+    line_time = 20
+    aoe_line = pygame.draw.rect(screen, (255, 255, 0), [200, y-8, 800, 16], 0)
+
+    line_y = y
+    for i in range(len(outlaws)):
+        aoe_hit = aoe_line.collidepoint(outlaws[i])
+        if aoe_hit == 1:
+            pending_removal_outlaws.append((outlaws[i][0]-outlaw_speed, outlaws[i][1]))
+    for i in range(len(speedy)):
+        aoe_hit = aoe_line.collidepoint(speedy[i])
+        if aoe_hit == 1:
+            pending_removal_speedy.append((speedy[i][0]-speedy_speed, speedy[i][1]))
+    for i in range(len(brutes)):
+        aoe_hit = aoe_line.collidepoint(brutes[i])
+        if aoe_hit == 1:
+            pending_removal_brutes.append((brutes[i][0]-brute_speed, brutes[i][1]))
+    for i in range(len(shifters)):
+        aoe_hit = aoe_line.collidepoint(shifters[i])
+        if aoe_hit == 1:
+            pending_removal_shifters.append((shifters[i][0]-shifter_speed, shifters[i][1]))
+    for i in range(len(chiefs)):
+        aoe_hit = aoe_line.collidepoint(chiefs[i])
+        if aoe_hit == 1:
+            pending_removal_chiefs.append((chiefs[i][0]-chief_speed, chiefs[i][1]))
+#Time left on the shockwave
+shockwave_time = 0
 def electro_ult():
-    s
+    global shockwave_time
+    shockwave_time = 300
 
 
 
@@ -521,7 +634,7 @@ def run_outlaws():
             current_health -= 500
             pending_removal_outlaws.append(outlaws[i])
         else:
-            outlaws[i] = (outlaws[i][0] - 1, outlaws[i][1])
+            outlaws[i] = (outlaws[i][0]-outlaw_speed, outlaws[i][1])
     # Remove everything that needs to be removed from the outlaws
     for i in range(len(pending_removal_outlaws)):
         # Test first (to protect against double clicks)
@@ -555,7 +668,7 @@ def run_speedy():
             #Remove by value and not index now
             pending_removal_speedy.append(speedy[i])
         else:
-            speedy[i] = (speedy[i][0] - 5, speedy[i][1])
+            speedy[i] = (speedy[i][0]-speedy_speed, speedy[i][1])
     # Remove everything that needs to be removed from the speedy
     for i in range(len(pending_removal_speedy)):
         # Test first (to protect against double clicks)
@@ -589,7 +702,7 @@ def run_brutes():
             current_health -= 1000
             pending_removal_brutes.append(brutes[i])
         else:
-            brutes[i] = (brutes[i][0] - 0.5, brutes[i][1])
+            brutes[i] = (brutes[i][0]-brute_speed, brutes[i][1])
     # Remove everything that needs to be removed from the outlaws
     for i in range(len(pending_removal_brutes)):
         # Test first (to protect against double clicks)
@@ -623,7 +736,7 @@ def run_shifters():
             current_health -= 500
             pending_removal_shifters.append(shifters[i])
         else:
-            shifters[i] = (shifters[i][0] - 0.5, shifters[i][1])
+            shifters[i] = (shifters[i][0]-shifter_speed, shifters[i][1])
     # Remove everything that needs to be removed from the shifters
     for i in range(len(pending_removal_shifters)):
         #Test first (to protect against double clicks)
@@ -657,7 +770,7 @@ def run_chiefs():
             current_health -= 2500
             pending_removal_chiefs.append(chiefs[i])
         else:
-            chiefs[i] = (chiefs[i][0] - 0.5, chiefs[i][1])
+            chiefs[i] = (chiefs[i][0]-chief_speed, chiefs[i][1])
     # Remove everything that needs to be removed from the chiefs
     for i in range(len(pending_removal_chiefs)):
         #Test first (to protect against double clicks)
@@ -695,16 +808,16 @@ while running and current_health > 0:
                 elif faction == 3:
                     cryo_1()
                 else:
-                    electro_1()
+                    electro_1(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
             elif event.key == K_2:
                 if faction == 1:
-                    pyro_2()
+                    pyro_2(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
                 elif faction == 2:
                     naturo_2()
                 elif faction == 3:
                     cryo_2()
                 else:
-                    electro_2()
+                    electro_2(pygame.mouse.get_pos()[1])
             elif event.key == K_3:
                 if faction == 1:
                     pyro_ult()
@@ -717,37 +830,106 @@ while running and current_health > 0:
         elif event.type == QUIT:
             running = False
         elif event.type == MOUSEBUTTONDOWN:
+            #If the mouse hit ANY target
+            hit = False
             #Test if something is hit
             for i in range(len(outlaws)):
-                outlaw_hit = pygame.draw.circle(screen, (0, 0, 0), outlaws[i], 10).collidepoint(event.pos)
-                if outlaw_hit == 1:
-                    current_XP+=50
-                    pending_removal_outlaws.append((outlaws[i][0]-1, outlaws[i][1]))
-                    break
+                if polymorph_time_counter == 0:
+                    if not hit:
+                        outlaw_hit = pygame.draw.circle(screen, (0, 0, 0), outlaws[i], 10).collidepoint(event.pos)
+                        if outlaw_hit == 1:
+                            current_XP+=50
+                            pending_removal_outlaws.append((outlaws[i][0]-outlaw_speed, outlaws[i][1]))
+                            hit = True
+                else:
+                    if not hit:
+                        outlaw_hit = pygame.draw.circle(screen, (0, 0, 0), outlaws[i], 20).collidepoint(event.pos)
+                        if outlaw_hit == 1:
+                            current_XP+=50
+                            pending_removal_outlaws.append((outlaws[i][0]-outlaw_speed, outlaws[i][1]))
+                            hit = True
             for i in range(len(speedy)):
-                speedy_hit = pygame.draw.circle(screen, (0, 0, 0), speedy[i], 10).collidepoint(event.pos)
-                if speedy_hit == 1:
-                    current_XP+=100
-                    pending_removal_speedy.append((speedy[i][0]-5, speedy[i][1]))
-                    break
+                if polymorph_time_counter == 0:
+                    if not hit:
+                        speedy_hit = pygame.draw.circle(screen, (0, 0, 0), speedy[i], 10).collidepoint(event.pos)
+                        if speedy_hit == 1:
+                            current_XP+=100
+                            pending_removal_speedy.append((speedy[i][0]-speedy_speed, speedy[i][1]))
+                            hit = True
+                else:
+                    if not hit:
+                        speedy_hit = pygame.draw.circle(screen, (0, 0, 0), speedy[i], 20).collidepoint(event.pos)
+                        if speedy_hit == 1:
+                            current_XP += 100
+                            pending_removal_speedy.append((speedy[i][0]-speedy_speed, speedy[i][1]))
+                            hit = True
             for i in range(len(brutes)):
-                brute_hit = pygame.draw.circle(screen, (0, 0, 0), brutes[i], 25).collidepoint(event.pos)
-                if brute_hit == 1:
-                    current_XP+=250
-                    pending_removal_brutes.append((brutes[i][0]-0.5, brutes[i][1]))
-                    break
+                if polymorph_time_counter == 0:
+                    if not hit:
+                        brute_hit = pygame.draw.circle(screen, (0, 0, 0), brutes[i], 25).collidepoint(event.pos)
+                        if brute_hit == 1:
+                            current_XP+=250
+                            pending_removal_brutes.append((brutes[i][0]-brute_speed, brutes[i][1]))
+                            hit = True
+                else:
+                    if not hit:
+                        brute_hit = pygame.draw.circle(screen, (0, 0, 0), brutes[i], 50).collidepoint(event.pos)
+                        if brute_hit == 1:
+                            current_XP += 250
+                            pending_removal_brutes.append((brutes[i][0]-brute_speed, brutes[i][1]))
+                            hit = True
             for i in range(len(shifters)):
-                shifter_hit = pygame.draw.circle(screen, (0, 0, 0), shifters[i], 15).collidepoint(event.pos)
-                if shifter_hit == 1:
-                    current_XP+=100
-                    pending_removal_shifters.append((shifters[i][0]-0.5, shifters[i][1]))
-                    break
+                if polymorph_time_counter == 0:
+                    if not hit:
+                        shifter_hit = pygame.draw.circle(screen, (0, 0, 0), shifters[i], 15).collidepoint(event.pos)
+                        if shifter_hit == 1:
+                            current_XP+=100
+                            pending_removal_shifters.append((shifters[i][0]-shifter_speed, shifters[i][1]))
+                            hit = True
+                else:
+                    if not hit:
+                        shifter_hit = pygame.draw.circle(screen, (0, 0, 0), shifters[i], 30).collidepoint(event.pos)
+                        if shifter_hit == 1:
+                            current_XP += 100
+                            pending_removal_shifters.append((shifters[i][0]-shifter_speed, shifters[i][1]))
+                            hit = True
             for i in range(len(chiefs)):
-                chief_hit = pygame.Rect([chiefs[i][0], chiefs[i][1], 50, 50]).collidepoint(event.pos)
-                if chief_hit == 1:
-                    current_XP+=500
-                    pending_removal_chiefs.append((chiefs[i][0]-0.5, chiefs[i][1]))
-                    break
+                if polymorph_time_counter == 0:
+                    if not hit:
+                        chief_hit = pygame.Rect([chiefs[i][0], chiefs[i][1], 50, 50]).collidepoint(event.pos)
+                        if chief_hit == 1:
+                            current_XP+=500
+                            pending_removal_chiefs.append((chiefs[i][0]-chief_speed, chiefs[i][1]))
+                            for i in range(level):
+                                outlaws.append((chiefs[i][0]-chief_speed, random.randint(0,800)))
+                                if i%2 == 0:
+                                    speedy.append((chiefs[i][0]-chief_speed, random.randint(0,800)))
+                                if i%4 == 0:
+                                    brutes.append(((chiefs[i][0]-chief_speed, random.randint(0,800))))
+                                if i%5 == 0:
+                                    shifters.append((chiefs[i][0]-chief_speed, random.randint(0,800)))
+                            hit = True
+                else:
+                    if not hit:
+                        chief_hit = pygame.Rect([chiefs[i][0], chiefs[i][1], 100, 100]).collidepoint(event.pos)
+                        if chief_hit == 1:
+                            current_XP += 500
+                            pending_removal_chiefs.append((chiefs[i][0]-chief_speed, chiefs[i][1]))
+                            for i in range(level):
+                                outlaws.append((chiefs[i][0]-chief_speed, random.randint(0,800)))
+                                if i%5 == 0:
+                                    speedy.append((chiefs[i][0]-chief_speed, random.randint(0,800)))
+                                if i%2 == 0:
+                                    brutes.append(((chiefs[i][0]-chief_speed, random.randint(0,800))))
+                                if i%4 == 0:
+                                    shifters.append((chiefs[i][0]-chief_speed, random.randint(0,800)))
+                            hit = True
+            if hit and faction==1 and healing_attacks!=0:
+                if current_health + 100 >= total_health:
+                    current_health = total_health
+                else:
+                    current_health+=100
+                healing_attacks-=1
 
 
 
@@ -777,20 +959,98 @@ while running and current_health > 0:
     level_display()
 
     # DRAW ENEMIES
-    for i in range(len(outlaws)):
-        pygame.draw.circle(screen, (0, 0, 0), outlaws[i], 10)
-    for i in range(len(speedy)):
-        pygame.draw.circle(screen, (150, 150, 150), speedy[i], 10)
-    for i in range(len(brutes)):
-        pygame.draw.circle(screen, (150, 0, 0), brutes[i], 25)
-    for i in range(len(shifters)):
-        pygame.draw.circle(screen, (shifter_colour, shifter_colour, shifter_colour), shifters[i], 15)
-    for i in range(len(chiefs)):
-        pygame.draw.rect(screen, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), [chiefs[i][0], chiefs[i][1], 50, 50], 0)
+    if polymorph_time_counter == 0:
+        for i in range(len(outlaws)):
+            pygame.draw.circle(screen, (0, 0, 0), outlaws[i], 10)
+        for i in range(len(speedy)):
+            pygame.draw.circle(screen, (150, 150, 150), speedy[i], 10)
+        for i in range(len(brutes)):
+            pygame.draw.circle(screen, (150, 0, 0), brutes[i], 25)
+        for i in range(len(shifters)):
+            pygame.draw.circle(screen, (shifter_colour, shifter_colour, shifter_colour), shifters[i], 15)
+        for i in range(len(chiefs)):
+            pygame.draw.rect(screen, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), [chiefs[i][0], chiefs[i][1], 50, 50], 0)
+    else:
+        for i in range(len(outlaws)):
+            pygame.draw.circle(screen, (0, 0, 0), outlaws[i], 20)
+        for i in range(len(speedy)):
+            pygame.draw.circle(screen, (150, 150, 150), speedy[i], 20)
+        for i in range(len(brutes)):
+            pygame.draw.circle(screen, (150, 0, 0), brutes[i], 50)
+        for i in range(len(shifters)):
+            pygame.draw.circle(screen, (shifter_colour, shifter_colour, shifter_colour), shifters[i], 30)
+        for i in range(len(chiefs)):
+            pygame.draw.rect(screen, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), [chiefs[i][0], chiefs[i][1], 100, 100], 0)
+        polymorph_time_counter-=1
+
+    #Apply healing for Cryo's ability 1
+    if cryo_time > 0:
+        if current_health!=total_health:
+            current_health+=1
+        cryo_time-=1
+
+    #Apply slow for Cryo's ability 2
+    if slow_time > 0:
+        outlaw_speed = 0.25
+        speedy_speed = 1.25
+        brute_speed = 0.125
+        shifter_speed = 0.25
+        chief_speed = 0.125
+        slow_time-=1
+    else:
+        outlaw_speed = 1
+        speedy_speed = 5
+        brute_speed = 0.5
+        shifter_speed = 1
+        chief_speed = 0.5
+
+    #Apply freeze for Cryo's untimate
+    if freeze_time > 0:
+        outlaw_speed = 0
+        speedy_speed = 0
+        brute_speed = 0
+        shifter_speed = 0
+        chief_speed = 0
+        freeze_time-=1
+
+        outlaw_counter-=1
+        speedy_counter-=1
+        brute_counter-=1
+        shifter_counter-=1
+        chief_counter-=1
 
 
 
 
+    #Draw Line for Electro's ability 2
+    if line_time > 0:
+        pygame.draw.rect(screen, (255, 255, 0), [200, line_y-8, 800, 16], 0)
+        line_time-=1
+
+    #Apply shockwave purge for Electro's Ultimate
+    if shockwave_time > 0:
+        aoe_circle = pygame.draw.circle(screen, (255, 255, 0), [pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]], 100)
+        for i in range(len(outlaws)):
+            aoe_hit = aoe_circle.collidepoint(outlaws[i])
+            if aoe_hit == 1:
+                pending_removal_outlaws.append((outlaws[i][0]-outlaw_speed, outlaws[i][1]))
+        for i in range(len(speedy)):
+            aoe_hit = aoe_circle.collidepoint(speedy[i])
+            if aoe_hit == 1:
+                pending_removal_speedy.append((speedy[i][0]-speedy_speed, speedy[i][1]))
+        for i in range(len(brutes)):
+            aoe_hit = aoe_circle.collidepoint(brutes[i])
+            if aoe_hit == 1:
+                pending_removal_brutes.append((brutes[i][0]-brute_speed, brutes[i][1]))
+        for i in range(len(shifters)):
+            aoe_hit = aoe_circle.collidepoint(shifters[i])
+            if aoe_hit == 1:
+                pending_removal_shifters.append((shifters[i][0]-shifter_speed, shifters[i][1]))
+        for i in range(len(chiefs)):
+            aoe_hit = aoe_circle.collidepoint(chiefs[i])
+            if aoe_hit == 1:
+                pending_removal_chiefs.append((chiefs[i][0]-chief_speed, chiefs[i][1]))
+        shockwave_time-=1
 
     # Must be the last two lines
     # of the game loop
