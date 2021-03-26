@@ -1,7 +1,7 @@
 # ICS2O - Computer Science CPT
 
-### Game Title
-Describe your game here.
+### Faction Defence
+Join one of the four ancient factions to equip yourself with supernatural powers and defeat the onslaught of enemies! Reach level 10 to win the game.
 
 ### Group members:
 - Raymond Wu
