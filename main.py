@@ -898,7 +898,7 @@ def ending_screen():
             elif event.type == QUIT:
                 playing = False
         #Test if user won
-        if level >= 9:
+        if level >= 11:
             won = True
 
         #DRAW
@@ -1123,7 +1123,7 @@ def run_chiefs():
 shifter_colour = 0
 shifter_direction = 1
 #ACTUAL CODE TO RUN GAME
-while running and current_health > 0 and level < 9:
+while running and current_health > 0 and level < 11:
     run_menu()
     # EVENT HANDLING
     for event in pygame.event.get():
