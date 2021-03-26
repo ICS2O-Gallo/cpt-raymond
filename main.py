@@ -833,7 +833,7 @@ def run_menu():
         # DRAWING
         screen.fill((255, 255, 255))  # always the first drawing command
 
-        # BACKGROUND
+        # #TEMP BACKGROUND
         # #Sky
         # for i in range (0, 200, 1):
         #     pygame.draw.line(screen, (i,0,75), [0,2*i], [1000,2*i], 5)
@@ -841,7 +841,7 @@ def run_menu():
         # for i in range (0, 200, 1):
         #     pygame.draw.line(screen, (0,i,0), [0,400+2*i], [1000,400+2 *i], 5)
 
-        #Load wallpaper
+        # #Load wallpaper
         image = pygame.image.load("castle_invasion.jpg")
         screen.blit(image, (0, 0))
         # Title
@@ -870,20 +870,23 @@ def run_menu():
         clock.tick(60)
 
 #Used to do the below transition
-transition_time = 300
+transition_time = 60
+y_pos = 90
 def menu_to_game_transition():
     global transition_time
+    global y_pos
+    transition_time = 60
     while transition_time > 0:
-        #Load wallpaper
+        # #Load wallpaper
         image = pygame.image.load("castle_invasion.jpg")
         screen.blit(image, (0, 0))
         # Title
         title_faction = game_title_font.render("Faction", True, (0, 0, 0))
         title_wars = game_title_font.render("Defence", True, (0, 0, 0))
         screen.blit(title_faction, [335, 5])
-        screen.blit(title_wars, [320, 90+10*(300-transition_time)])
-
-        FIX THIS UP
+        screen.blit(title_wars, [320, y_pos*1.1])
+        y_pos *= 1.1
+        # FIX THIS UP
         #Update transition_time
         transition_time-=1
         pygame.display.flip()
@@ -1208,13 +1211,13 @@ while running and current_health > 0:
                         if chief_hit == 1:
                             current_XP+=500
                             pending_removal_chiefs.append((chiefs[i][0]-chief_speed, chiefs[i][1]))
-                            for i in range(level):
+                            for j in range(level):
                                 outlaws.append((chiefs[i][0]-chief_speed, random.randint(0,800)))
-                                if i%2 == 0:
+                                if j%2 == 0:
                                     speedy.append((chiefs[i][0]-chief_speed, random.randint(0,800)))
-                                if i%4 == 0:
+                                if j%4 == 0:
                                     brutes.append(((chiefs[i][0]-chief_speed, random.randint(0,800))))
-                                if i%5 == 0:
+                                if j%5 == 0:
                                     shifters.append((chiefs[i][0]-chief_speed, random.randint(0,800)))
                             hit = True
                 else:
@@ -1223,13 +1226,13 @@ while running and current_health > 0:
                         if chief_hit == 1:
                             current_XP += 500
                             pending_removal_chiefs.append((chiefs[i][0]-chief_speed, chiefs[i][1]))
-                            for i in range(level):
+                            for j in range(level):
                                 outlaws.append((chiefs[i][0]-chief_speed, random.randint(0,800)))
-                                if i%5 == 0:
+                                if j%5 == 0:
                                     speedy.append((chiefs[i][0]-chief_speed, random.randint(0,800)))
-                                if i%2 == 0:
+                                if j%2 == 0:
                                     brutes.append(((chiefs[i][0]-chief_speed, random.randint(0,800))))
-                                if i%4 == 0:
+                                if j%4 == 0:
                                     shifters.append((chiefs[i][0]-chief_speed, random.randint(0,800)))
                             hit = True
             if hit and faction==1 and healing_attacks!=0:
