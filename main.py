@@ -29,6 +29,7 @@ DEFAULT = (49, 51, 53)
 current_faction_colour = (-1, -1, -1)
 
 # Buttons
+#General
 play_button = pygame.Rect(400, 700, 200, 100) # (MIDDLE)
 view_back_button = pygame.Rect(300, 645, 100, 50) # (ON THE FACTION SELECT SCREEN)
 
@@ -450,6 +451,8 @@ def left_hud(r,g,b):
     pygame.draw.rect(screen, (175, 0, 175), [5, 30, 190, 190], 2)
     # Display Abilities
     abilities(5, 225, 255, 255, 255)
+    # Display Enemies
+    enemies_info()
 
 #Display Level
 def level_display():
@@ -465,6 +468,39 @@ def level_display():
     #Level Text
     level_text = health_font.render(f"Level {level}", True, (255, 255, 255))
     screen.blit(level_text, [60, 475])
+
+#Display the information relating to the enemies
+def enemies_info():
+    #Outlaw
+    pygame.draw.circle(screen, (255, 255, 255), [30,550], 10)
+    outlaw_text = health_font.render("Deals 100 Damage", True, (255, 255, 255))
+    screen.blit(outlaw_text, [57, 540])
+    #Speedy
+    pygame.draw.circle(screen, (150, 150, 150), [30,575], 10)
+    speedy_text = health_font.render("Deals 500 Damage", True, (255, 255, 255))
+    screen.blit(speedy_text, [57, 565])
+    #Brute
+    pygame.draw.circle(screen, (150, 0, 0), [30,625], 25)
+    brute_text = health_font.render("Deals 1000 Damage", True, (255, 255, 255))
+    screen.blit(brute_text, [57, 615])
+    #Shifter
+    temp_shifter_colour = random.randint(0, 255)
+    pygame.draw.circle(screen, (temp_shifter_colour, temp_shifter_colour, temp_shifter_colour), [30,675], 15)
+    shifter_text_1 = health_font.render("Deals 500 Damage", True, (255, 255, 255))
+    shifter_text_2 = health_font.render("Shifts Colour", True, (255, 255, 255))
+    screen.blit(shifter_text_1, [57, 660])
+    screen.blit(shifter_text_2, [57, 675])
+    #Chief
+    pygame.draw.rect(screen, (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)),[5, 700, 50, 50], 0)
+    chief_text_1 = health_font.render("Deals 2500 Damage", True, (255, 255, 255))
+    chief_text_2 = health_font.render("Spawns Enemies", True, (255, 255, 255))
+    screen.blit(chief_text_1, [57, 710])
+    screen.blit(chief_text_2, [57, 725])
+    #Win condition
+    wincon_text = health_font.render("Complete Level 10 to Win!", True, (255, 255, 255))
+    screen.blit(wincon_text, [5, 765])
+
+
 # ---------------------------
 #Pyro Abilities
 #Healing Attacks Counter - 0 means none left
@@ -862,7 +898,7 @@ def ending_screen():
             elif event.type == QUIT:
                 playing = False
         #Test if user won
-        if level >= 11:
+        if level >= 9:
             won = True
 
         #DRAW
@@ -1087,7 +1123,7 @@ def run_chiefs():
 shifter_colour = 0
 shifter_direction = 1
 #ACTUAL CODE TO RUN GAME
-while running and current_health > 0 and level < 11:
+while running and current_health > 0 and level < 9:
     run_menu()
     # EVENT HANDLING
     for event in pygame.event.get():
