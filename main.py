@@ -44,8 +44,6 @@ view_button_2 = pygame.Rect(700, 290, 190, 85)
 view_button_3 = pygame.Rect(300, 690, 190, 85)
 view_button_4 = pygame.Rect(700, 690, 190, 85)
 
-
-
 # ---------------------------
 #Game runs while running is True
 running = True
