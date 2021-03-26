@@ -29,9 +29,7 @@ DEFAULT = (49, 51, 53)
 current_faction_colour = (-1, -1, -1)
 
 # Buttons
-shop_button = pygame.Rect(800, 700, 200, 100)  # (RIGHT SIDE)
 play_button = pygame.Rect(400, 700, 200, 100) # (MIDDLE)
-instructions_button = pygame.Rect(0, 700, 200, 100) # (LEFT SIDE)
 view_back_button = pygame.Rect(300, 645, 100, 50) # (ON THE FACTION SELECT SCREEN)
 
 #Select Buttons
@@ -49,7 +47,6 @@ view_button_4 = pygame.Rect(700, 690, 190, 85)
 
 
 # ---------------------------
-
 #Game runs while running is True
 running = True
 #The player's selected faction - 0 is none
@@ -464,7 +461,7 @@ def level_display():
     #Level Bar (XP)
     pygame.draw.rect(screen, (211, 211, 211), [5, 500, 190, 20], 0)
     pygame.draw.rect(screen, (0, 204, 255), [5, 500, 190*(current_XP/required_XP), 20], 0)
-    #Experience Text (CP)
+    #Experience Text (XP)
     xp_text = health_font.render(f"{current_XP}/{required_XP}", True, (0, 0, 0))
     screen.blit(xp_text, [60, 500])
     #Level Text
@@ -596,28 +593,6 @@ def cryo_ult():
         freeze_time = 480
         # Update cooldown
         cryo_3_cd = 900
-
-#DELETE (JUST A PLACEHOLDER TO SEE WHERE THE ABILITY FUNCTIONSS ARE)
-def delet():
-    j
-    u
-    s
-    t
-
-    a
-
-    p
-    l
-    a
-    c
-    e
-    h
-    o
-    l
-    d
-    e
-    r
-
 
 #Electro Abilities
 def electro_1(x, y):
@@ -819,12 +794,9 @@ def run_menu():
                 running = False
             elif event.type == MOUSEBUTTONDOWN:
                 play_hit = play_button.collidepoint(event.pos)
-                instructions_hit = instructions_button.collidepoint(event.pos)
                 if play_hit == 1:
                     menu_to_game_transition()
                     entry_screen()
-                elif instructions_hit == 1:
-                    run_rules()
 
 
         # GAME STATE UPDATES
@@ -833,15 +805,7 @@ def run_menu():
         # DRAWING
         screen.fill((255, 255, 255))  # always the first drawing command
 
-        # #TEMP BACKGROUND
-        # #Sky
-        # for i in range (0, 200, 1):
-        #     pygame.draw.line(screen, (i,0,75), [0,2*i], [1000,2*i], 5)
-        # #Grass
-        # for i in range (0, 200, 1):
-        #     pygame.draw.line(screen, (0,i,0), [0,400+2*i], [1000,400+2 *i], 5)
-
-        # #Load wallpaper
+        #Load wallpaper
         image = pygame.image.load("castle_invasion.jpg")
         screen.blit(image, (0, 0))
         # Title
@@ -850,19 +814,11 @@ def run_menu():
         screen.blit(title_faction, [335, 5])
         screen.blit(title_wars, [320, 90])
 
-        # BUTTONS
-        # #Shop Button
-        # pygame.draw.ellipse(screen, (0, 0, 0), shop_button, 0)
-        # shop_text = menu_font.render("SHOP", True, (255, 255, 0))
-        # screen.blit(shop_text, [860, 735])
+        # BUTTON
         #Play button
         pygame.draw.ellipse(screen, (0, 0, 0), play_button, 0)
         play_text = menu_font.render("PLAY", True, (255, 255, 0))
         screen.blit(play_text, [460, 735])
-        # #Instruction Button
-        # pygame.draw.ellipse(screen, (0, 0, 0), instructions_button, 0)
-        # rules_text = menu_font.render("RULES", True, (255, 255, 0))
-        # screen.blit(rules_text, [50, 735])
 
         # Must be the last two lines
         # of the game loop
@@ -875,6 +831,7 @@ y_pos = 90
 def menu_to_game_transition():
     global transition_time
     global y_pos
+    y_pos = 90
     transition_time = 60
     while transition_time > 0:
         # #Load wallpaper
@@ -886,43 +843,71 @@ def menu_to_game_transition():
         screen.blit(title_faction, [335, 5])
         screen.blit(title_wars, [320, y_pos*1.1])
         y_pos *= 1.1
-        # FIX THIS UP
         #Update transition_time
         transition_time-=1
         pygame.display.flip()
         clock.tick(60)
 
+def ending_screen():
+    global level
+    global current_health
 
-#Display rules function
-def run_rules():
-    rules = True
-    while rules:
+    playing = True
+    won = False
+    y_position = 1
+    while playing:
         # EVENT HANDLING
         for event in pygame.event.get():
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    rules = False
+                    playing = False
             elif event.type == QUIT:
-                rules = False
+                playing = False
+        #Test if user won
+        if level >= 11:
+            won = True
 
-        # GAME STATE UPDATES
-        # All game math and comparisons happen here
+        #DRAW
+        screen.fill((255,255,255))
+        # Different ending screens depending on how the game concludes
 
-        # DRAWING
-        screen.fill((255, 255, 255))  # always the first drawing command
+        if won:
+            #Victory wallpaper
+            image = pygame.image.load("victory_wallpaper.jpg")
+            screen.blit(image, (0, 0))
+            #Victory text
+            end_text = game_title_font.render("Victory!", True, (0, 70, 0))
+            #Bits - Rain/Hail
+            for i in range(85):
+                rand_x = random.randint(0, 1000)
+                rand_y = random.randint(0, 800)
+                pygame.draw.circle(screen, (255, 255, 255), [rand_x, rand_y], 1)
+        else:
+            #Defeat wallpaper
+            image = pygame.image.load("defeat_wallpaper.jpg")
+            screen.blit(image, (0, 0))
+            #Defeat text
+            end_text = game_title_font.render("Defeat...", True, (170, 0, 0))
+            #Bits - Moths concentrated on lamp
+            for i in range(85):
+                rand_x = random.randint(250, 400)
+                rand_y = random.randint(550, 700)
+                pygame.draw.circle(screen, (0, 0, 0), [rand_x, rand_y], 2)
+            #Bits - Random moths
+            for i in range(170):
+                rand_x = random.randint(0, 1000)
+                rand_y = random.randint(0, 800)
+                pygame.draw.circle(screen, (0, 0, 0), [rand_x, rand_y], 2)
+        #Updare position
+        if y_position <= 800:
+            #Display it dropping
+            screen.blit(end_text, [320, y_position * 1.1])
+            y_position*=1.1
+        else:
+            #Display at center
+            screen.blit(end_text, [320, 340])
 
-        # BACKGROUND
-        for i in range(161):
-            pygame.draw.line(screen, (80+i, 40+i, 60+i//2), [0,5*i], [1000,5*i], 5)
-
-        #Actual Rules
-        line_1 = faction_name_font.render("Instructions", True, (0, 0, 0))
-
-        screen.blit(line_1, [375, 5])
-
-
-        # Must be the last two lines
-        # of the game loop
+        #Display
         pygame.display.flip()
         clock.tick(60)
 
@@ -1104,7 +1089,7 @@ def run_chiefs():
 shifter_colour = 0
 shifter_direction = 1
 #ACTUAL CODE TO RUN GAME
-while running and current_health > 0:
+while running and current_health > 0 and level < 11:
     run_menu()
     # EVENT HANDLING
     for event in pygame.event.get():
@@ -1256,8 +1241,6 @@ while running and current_health > 0:
                 #Decrease number left
                 healing_attacks-=1
 
-
-
     # GAME STATE UPDATES
     # All game math and comparisons happen here
     #SHIFT COLOUR FOR SHIFTERS
@@ -1303,12 +1286,12 @@ while running and current_health > 0:
     if electro_3_cd > 0:
         electro_3_cd -= 1
 
-
-
     # DRAWING
     screen.fill((255, 255, 255))  # always the first drawing command
     # LEFT SCREEN
-    left_hud(current_faction_colour[0], current_faction_colour[1], current_faction_colour[2])
+    if faction!=0:
+        left_hud(current_faction_colour[0], current_faction_colour[1], current_faction_colour[2])
+
     # LEVEL + XP DISPLAY
     level_display()
 
@@ -1415,5 +1398,6 @@ while running and current_health > 0:
     pygame.display.flip()
     clock.tick(60)
 
-
+#Display screen end
+ending_screen()
 pygame.quit()
