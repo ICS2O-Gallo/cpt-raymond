@@ -65,11 +65,11 @@ brute_counter = 0
 shifter_counter = 0
 chief_counter = 0
 #Speed of the enemies (can be altered through abilities)
-outlaw_speed = 1
-speedy_speed = 5
-brute_speed = 0.5
-shifter_speed = 1
-chief_speed = 0.5
+OUTLAW_SPEED = 1
+SPEEDY_SPEED = 5
+BRUTE_SPEED = 0.5
+SHIFTER_SPEED = 1
+CHIEF_SPEED = 0.5
 #Cooldown Counters - 0 is on cooldown
 pyro_1_cd = 0
 pyro_2_cd = 0
@@ -220,7 +220,6 @@ def view_faction1():
     screen.blit(ability_3_ln1, [355, 590])
     screen.blit(ability_3_ln2, [355, 604])
     screen.blit(ability_3_cd, [355, 618])
-
 # Faction 2 Info
 def view_faction2():
     #Icon
@@ -531,23 +530,23 @@ def pyro_2(x,y):
         for i in range(len(outlaws)):
             aoe_hit = aoe_circle.collidepoint(outlaws[i])
             if aoe_hit == 1:
-                pending_removal_outlaws.append((outlaws[i][0]-outlaw_speed, outlaws[i][1]))
+                pending_removal_outlaws.append((outlaws[i][0] - OUTLAW_SPEED, outlaws[i][1]))
         for i in range(len(speedy)):
             aoe_hit = aoe_circle.collidepoint(speedy[i])
             if aoe_hit == 1:
-                pending_removal_speedy.append((speedy[i][0]-speedy_speed, speedy[i][1]))
+                pending_removal_speedy.append((speedy[i][0] - SPEEDY_SPEED, speedy[i][1]))
         for i in range(len(brutes)):
             aoe_hit = aoe_circle.collidepoint(brutes[i])
             if aoe_hit == 1:
-                pending_removal_brutes.append((brutes[i][0]-brute_speed, brutes[i][1]))
+                pending_removal_brutes.append((brutes[i][0] - BRUTE_SPEED, brutes[i][1]))
         for i in range(len(shifters)):
             aoe_hit = aoe_circle.collidepoint(shifters[i])
             if aoe_hit == 1:
-                pending_removal_shifters.append((shifters[i][0]-shifter_speed, shifters[i][1]))
+                pending_removal_shifters.append((shifters[i][0] - SHIFTER_SPEED, shifters[i][1]))
         for i in range(len(chiefs)):
             aoe_hit = aoe_circle.collidepoint(chiefs[i])
             if aoe_hit == 1:
-                pending_removal_chiefs.append((chiefs[i][0]-chief_speed, chiefs[i][1]))
+                pending_removal_chiefs.append((chiefs[i][0] - CHIEF_SPEED, chiefs[i][1]))
         # Update cooldown
         pyro_2_cd = 300
 
@@ -662,23 +661,23 @@ def electro_2(y):
         for i in range(len(outlaws)):
             aoe_hit = aoe_line.collidepoint(outlaws[i])
             if aoe_hit == 1:
-                pending_removal_outlaws.append((outlaws[i][0]-outlaw_speed, outlaws[i][1]))
+                pending_removal_outlaws.append((outlaws[i][0] - OUTLAW_SPEED, outlaws[i][1]))
         for i in range(len(speedy)):
             aoe_hit = aoe_line.collidepoint(speedy[i])
             if aoe_hit == 1:
-                pending_removal_speedy.append((speedy[i][0]-speedy_speed, speedy[i][1]))
+                pending_removal_speedy.append((speedy[i][0] - SPEEDY_SPEED, speedy[i][1]))
         for i in range(len(brutes)):
             aoe_hit = aoe_line.collidepoint(brutes[i])
             if aoe_hit == 1:
-                pending_removal_brutes.append((brutes[i][0]-brute_speed, brutes[i][1]))
+                pending_removal_brutes.append((brutes[i][0] - BRUTE_SPEED, brutes[i][1]))
         for i in range(len(shifters)):
             aoe_hit = aoe_line.collidepoint(shifters[i])
             if aoe_hit == 1:
-                pending_removal_shifters.append((shifters[i][0]-shifter_speed, shifters[i][1]))
+                pending_removal_shifters.append((shifters[i][0] - SHIFTER_SPEED, shifters[i][1]))
         for i in range(len(chiefs)):
             aoe_hit = aoe_line.collidepoint(chiefs[i])
             if aoe_hit == 1:
-                pending_removal_chiefs.append((chiefs[i][0]-chief_speed, chiefs[i][1]))
+                pending_removal_chiefs.append((chiefs[i][0] - CHIEF_SPEED, chiefs[i][1]))
 
         # Update cooldown
         electro_2_cd = 480
@@ -964,7 +963,7 @@ def run_outlaws():
             current_health -= 100
             pending_removal_outlaws.append(outlaws[i])
         else:
-            outlaws[i] = (outlaws[i][0]-outlaw_speed, outlaws[i][1])
+            outlaws[i] = (outlaws[i][0] - OUTLAW_SPEED, outlaws[i][1])
     # Remove everything that needs to be removed from the outlaws
     for i in range(len(pending_removal_outlaws)):
         # Test first (to protect against double clicks)
@@ -998,7 +997,7 @@ def run_speedy():
             #Remove by value and not index now
             pending_removal_speedy.append(speedy[i])
         else:
-            speedy[i] = (speedy[i][0]-speedy_speed, speedy[i][1])
+            speedy[i] = (speedy[i][0] - SPEEDY_SPEED, speedy[i][1])
     # Remove everything that needs to be removed from the speedy
     for i in range(len(pending_removal_speedy)):
         # Test first (to protect against double clicks)
@@ -1032,7 +1031,7 @@ def run_brutes():
             current_health -= 1000
             pending_removal_brutes.append(brutes[i])
         else:
-            brutes[i] = (brutes[i][0]-brute_speed, brutes[i][1])
+            brutes[i] = (brutes[i][0] - BRUTE_SPEED, brutes[i][1])
     # Remove everything that needs to be removed from the outlaws
     for i in range(len(pending_removal_brutes)):
         # Test first (to protect against double clicks)
@@ -1066,7 +1065,7 @@ def run_shifters():
             current_health -= 500
             pending_removal_shifters.append(shifters[i])
         else:
-            shifters[i] = (shifters[i][0]-shifter_speed, shifters[i][1])
+            shifters[i] = (shifters[i][0] - SHIFTER_SPEED, shifters[i][1])
     # Remove everything that needs to be removed from the shifters
     for i in range(len(pending_removal_shifters)):
         #Test first (to protect against double clicks)
@@ -1100,7 +1099,7 @@ def run_chiefs():
             current_health -= 2500
             pending_removal_chiefs.append(chiefs[i])
         else:
-            chiefs[i] = (chiefs[i][0]-chief_speed, chiefs[i][1])
+            chiefs[i] = (chiefs[i][0] - CHIEF_SPEED, chiefs[i][1])
     # Remove everything that needs to be removed from the chiefs
     for i in range(len(pending_removal_chiefs)):
         #Test first (to protect against double clicks)
@@ -1169,14 +1168,14 @@ while running and current_health > 0 and level < 11:
                         outlaw_hit = pygame.draw.circle(screen, (0, 0, 0), outlaws[i], 10).collidepoint(event.pos)
                         if outlaw_hit == 1:
                             current_XP+=50
-                            pending_removal_outlaws.append((outlaws[i][0]-outlaw_speed, outlaws[i][1]))
+                            pending_removal_outlaws.append((outlaws[i][0] - OUTLAW_SPEED, outlaws[i][1]))
                             hit = True
                 else:
                     if not hit:
                         outlaw_hit = pygame.draw.circle(screen, (0, 0, 0), outlaws[i], 20).collidepoint(event.pos)
                         if outlaw_hit == 1:
                             current_XP+=50
-                            pending_removal_outlaws.append((outlaws[i][0]-outlaw_speed, outlaws[i][1]))
+                            pending_removal_outlaws.append((outlaws[i][0] - OUTLAW_SPEED, outlaws[i][1]))
                             hit = True
             for i in range(len(speedy)):
                 if polymorph_time_counter == 0:
@@ -1184,14 +1183,14 @@ while running and current_health > 0 and level < 11:
                         speedy_hit = pygame.draw.circle(screen, (0, 0, 0), speedy[i], 10).collidepoint(event.pos)
                         if speedy_hit == 1:
                             current_XP+=100
-                            pending_removal_speedy.append((speedy[i][0]-speedy_speed, speedy[i][1]))
+                            pending_removal_speedy.append((speedy[i][0] - SPEEDY_SPEED, speedy[i][1]))
                             hit = True
                 else:
                     if not hit:
                         speedy_hit = pygame.draw.circle(screen, (0, 0, 0), speedy[i], 20).collidepoint(event.pos)
                         if speedy_hit == 1:
                             current_XP += 100
-                            pending_removal_speedy.append((speedy[i][0]-speedy_speed, speedy[i][1]))
+                            pending_removal_speedy.append((speedy[i][0] - SPEEDY_SPEED, speedy[i][1]))
                             hit = True
             for i in range(len(brutes)):
                 if polymorph_time_counter == 0:
@@ -1199,14 +1198,14 @@ while running and current_health > 0 and level < 11:
                         brute_hit = pygame.draw.circle(screen, (0, 0, 0), brutes[i], 25).collidepoint(event.pos)
                         if brute_hit == 1:
                             current_XP+=250
-                            pending_removal_brutes.append((brutes[i][0]-brute_speed, brutes[i][1]))
+                            pending_removal_brutes.append((brutes[i][0] - BRUTE_SPEED, brutes[i][1]))
                             hit = True
                 else:
                     if not hit:
                         brute_hit = pygame.draw.circle(screen, (0, 0, 0), brutes[i], 50).collidepoint(event.pos)
                         if brute_hit == 1:
                             current_XP += 250
-                            pending_removal_brutes.append((brutes[i][0]-brute_speed, brutes[i][1]))
+                            pending_removal_brutes.append((brutes[i][0] - BRUTE_SPEED, brutes[i][1]))
                             hit = True
             for i in range(len(shifters)):
                 if polymorph_time_counter == 0:
@@ -1214,14 +1213,14 @@ while running and current_health > 0 and level < 11:
                         shifter_hit = pygame.draw.circle(screen, (0, 0, 0), shifters[i], 15).collidepoint(event.pos)
                         if shifter_hit == 1:
                             current_XP+=100
-                            pending_removal_shifters.append((shifters[i][0]-shifter_speed, shifters[i][1]))
+                            pending_removal_shifters.append((shifters[i][0] - SHIFTER_SPEED, shifters[i][1]))
                             hit = True
                 else:
                     if not hit:
                         shifter_hit = pygame.draw.circle(screen, (0, 0, 0), shifters[i], 30).collidepoint(event.pos)
                         if shifter_hit == 1:
                             current_XP += 100
-                            pending_removal_shifters.append((shifters[i][0]-shifter_speed, shifters[i][1]))
+                            pending_removal_shifters.append((shifters[i][0] - SHIFTER_SPEED, shifters[i][1]))
                             hit = True
             for i in range(len(chiefs)):
                 if polymorph_time_counter == 0:
@@ -1229,30 +1228,30 @@ while running and current_health > 0 and level < 11:
                         chief_hit = pygame.Rect([chiefs[i][0], chiefs[i][1], 50, 50]).collidepoint(event.pos)
                         if chief_hit == 1:
                             current_XP+=500
-                            pending_removal_chiefs.append((chiefs[i][0]-chief_speed, chiefs[i][1]))
+                            pending_removal_chiefs.append((chiefs[i][0] - CHIEF_SPEED, chiefs[i][1]))
                             for j in range(level):
-                                outlaws.append((chiefs[i][0]-chief_speed, random.randint(0,800)))
+                                outlaws.append((chiefs[i][0] - CHIEF_SPEED, random.randint(0, 800)))
                                 if j%2 == 0:
-                                    speedy.append((chiefs[i][0]-chief_speed, random.randint(0,800)))
+                                    speedy.append((chiefs[i][0] - CHIEF_SPEED, random.randint(0, 800)))
                                 if j%4 == 0:
-                                    brutes.append(((chiefs[i][0]-chief_speed, random.randint(0,800))))
+                                    brutes.append(((chiefs[i][0] - CHIEF_SPEED, random.randint(0, 800))))
                                 if j%5 == 0:
-                                    shifters.append((chiefs[i][0]-chief_speed, random.randint(0,800)))
+                                    shifters.append((chiefs[i][0] - CHIEF_SPEED, random.randint(0, 800)))
                             hit = True
                 else:
                     if not hit:
                         chief_hit = pygame.Rect([chiefs[i][0], chiefs[i][1], 100, 100]).collidepoint(event.pos)
                         if chief_hit == 1:
                             current_XP += 500
-                            pending_removal_chiefs.append((chiefs[i][0]-chief_speed, chiefs[i][1]))
+                            pending_removal_chiefs.append((chiefs[i][0] - CHIEF_SPEED, chiefs[i][1]))
                             for j in range(level):
-                                outlaws.append((chiefs[i][0]-chief_speed, random.randint(0,800)))
+                                outlaws.append((chiefs[i][0] - CHIEF_SPEED, random.randint(0, 800)))
                                 if j%5 == 0:
-                                    speedy.append((chiefs[i][0]-chief_speed, random.randint(0,800)))
+                                    speedy.append((chiefs[i][0] - CHIEF_SPEED, random.randint(0, 800)))
                                 if j%2 == 0:
-                                    brutes.append(((chiefs[i][0]-chief_speed, random.randint(0,800))))
+                                    brutes.append(((chiefs[i][0] - CHIEF_SPEED, random.randint(0, 800))))
                                 if j%4 == 0:
-                                    shifters.append((chiefs[i][0]-chief_speed, random.randint(0,800)))
+                                    shifters.append((chiefs[i][0] - CHIEF_SPEED, random.randint(0, 800)))
                             hit = True
             if hit and faction==1 and healing_attacks!=0:
                 if current_health + 100 >= total_health:
@@ -1367,26 +1366,26 @@ while running and current_health > 0 and level < 11:
 
     #Apply slow for Cryo's ability 2
     if slow_time > 0:
-        outlaw_speed = 0.25
-        speedy_speed = 1.25
-        brute_speed = 0.125
-        shifter_speed = 0.25
-        chief_speed = 0.125
+        OUTLAW_SPEED = 0.25
+        SPEEDY_SPEED = 1.25
+        BRUTE_SPEED = 0.125
+        SHIFTER_SPEED = 0.25
+        CHIEF_SPEED = 0.125
         slow_time-=1
     else:
-        outlaw_speed = 1
-        speedy_speed = 5
-        brute_speed = 0.5
-        shifter_speed = 1
-        chief_speed = 0.5
+        OUTLAW_SPEED = 1
+        SPEEDY_SPEED = 5
+        BRUTE_SPEED = 0.5
+        SHIFTER_SPEED = 1
+        CHIEF_SPEED = 0.5
 
     #Apply freeze for Cryo's untimate
     if freeze_time > 0:
-        outlaw_speed = 0
-        speedy_speed = 0
-        brute_speed = 0
-        shifter_speed = 0
-        chief_speed = 0
+        OUTLAW_SPEED = 0
+        SPEEDY_SPEED = 0
+        BRUTE_SPEED = 0
+        SHIFTER_SPEED = 0
+        CHIEF_SPEED = 0
         freeze_time-=1
 
         outlaw_counter-=1
@@ -1408,23 +1407,23 @@ while running and current_health > 0 and level < 11:
         for i in range(len(outlaws)):
             aoe_hit = aoe_circle.collidepoint(outlaws[i])
             if aoe_hit == 1:
-                pending_removal_outlaws.append((outlaws[i][0]-outlaw_speed, outlaws[i][1]))
+                pending_removal_outlaws.append((outlaws[i][0] - OUTLAW_SPEED, outlaws[i][1]))
         for i in range(len(speedy)):
             aoe_hit = aoe_circle.collidepoint(speedy[i])
             if aoe_hit == 1:
-                pending_removal_speedy.append((speedy[i][0]-speedy_speed, speedy[i][1]))
+                pending_removal_speedy.append((speedy[i][0] - SPEEDY_SPEED, speedy[i][1]))
         for i in range(len(brutes)):
             aoe_hit = aoe_circle.collidepoint(brutes[i])
             if aoe_hit == 1:
-                pending_removal_brutes.append((brutes[i][0]-brute_speed, brutes[i][1]))
+                pending_removal_brutes.append((brutes[i][0] - BRUTE_SPEED, brutes[i][1]))
         for i in range(len(shifters)):
             aoe_hit = aoe_circle.collidepoint(shifters[i])
             if aoe_hit == 1:
-                pending_removal_shifters.append((shifters[i][0]-shifter_speed, shifters[i][1]))
+                pending_removal_shifters.append((shifters[i][0] - SHIFTER_SPEED, shifters[i][1]))
         for i in range(len(chiefs)):
             aoe_hit = aoe_circle.collidepoint(chiefs[i])
             if aoe_hit == 1:
-                pending_removal_chiefs.append((chiefs[i][0]-chief_speed, chiefs[i][1]))
+                pending_removal_chiefs.append((chiefs[i][0] - CHIEF_SPEED, chiefs[i][1]))
         shockwave_time-=1
 
     # Must be the last two lines
